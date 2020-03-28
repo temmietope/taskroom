@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: 'rgba(255, 192, 203, 0.158)'
   },
   headerText: {
     fontWeight: "bold",
