@@ -1,24 +1,23 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
-import { AntDesign } from "@expo/vector-icons";
-
+import FlatButton from "../shared/button";
 
 export default function TasksDetails({ navigation }) {
   return (
     <View style={globalStyles.container}>
       <View style={styles.detailsView}>
         <Text style={styles.taskTitle}>{navigation.getParam("title")}</Text>
-        <Card>
-          <Text>{navigation.getParam("body")}</Text>
-        </Card>
-        <AntDesign
-        name="check"
-        size={24}
-        style={styles.taskComplete}
-        // onPress={() => setModalOpen(true)}
-      />
+        <View style={styles.taskDescription}>
+          <Card>
+            <Text style={styles.taskDescriptionText}>
+              {navigation.getParam("body")}
+            </Text>
+          </Card>
+        </View>
+
+        <FlatButton text="Task Completed" />
       </View>
     </View>
   );
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     marginHorizontal: 4,
-    // marginVertical: 10,
     borderColor: "gray",
     padding: 10,
     height: "100%"
@@ -46,15 +44,13 @@ const styles = StyleSheet.create({
     padding: 10,
     fontWeight: "bold"
   },
-  rating: {
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingTop: 16,
-    marginTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: "#eee"
+  taskDescription: {
+    marginBottom: 10
+  },
+  taskDescriptionText: {
+    fontSize: 16
   },
   taskComplete: {
-
+    backgroundColor: "red"
   }
 });
