@@ -5,19 +5,22 @@ import Card from "../shared/card";
 import FlatButton from "../shared/button";
 
 export default function TasksDetails({ navigation }) {
+  const item = navigation.getParam("item");
+  const markAsComplete = navigation.getParam("markAsComplete");
   return (
     <View style={globalStyles.container}>
       <View style={styles.detailsView}>
-        <Text style={styles.taskTitle}>{navigation.getParam("title")}</Text>
+        <Text style={styles.taskTitle}>{item.title}</Text>
         <View style={styles.taskDescription}>
           <Card>
-            <Text style={styles.taskDescriptionText}>
-              {navigation.getParam("body")}
-            </Text>
+            <Text style={styles.taskDescriptionText}>{item.body}</Text>
           </Card>
         </View>
 
-        <FlatButton text="Task Completed" />
+        <FlatButton
+          text="Task Completed"
+          onPress={() => markAsComplete(`${item.key}`)}
+        />
       </View>
     </View>
   );

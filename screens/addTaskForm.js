@@ -32,7 +32,7 @@ export default function AddTaskForm({ addTask }) {
             <TextInput
               style={globalStyles.input}
               placeholder="Task title"
-              onChangeText={props.handleChange("title")}
+              onChangeText={props.handleChange(`item[title]`)}
               value={props.values.title}
               onBlur={props.handleBlur("title")}
             />

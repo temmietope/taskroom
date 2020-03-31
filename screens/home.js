@@ -12,8 +12,7 @@ import {
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import { MaterialIcons } from "@expo/vector-icons";
-import AddTaskForm from "./addTaskForm"
-
+import AddTaskForm from "./addTaskForm";
 
 export default function Home({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -34,6 +33,7 @@ export default function Home({ navigation }) {
       key: "3"
     }
   ]);
+  const [completedTasks, setCompletedTask] = useState([]);
 
   const addTask = task => {
     task.key = Math.random().toString();
@@ -41,6 +41,9 @@ export default function Home({ navigation }) {
       return [task, ...currentTasks];
     });
     setModalOpen(false);
+  };
+  const markAsComplete = task => {
+    console.log(task);
   };
   return (
     <View style={globalStyles.container}>
@@ -69,7 +72,12 @@ export default function Home({ navigation }) {
         data={tasks}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate("TaskDetails", item)}
+            onPress={() =>
+              navigation.navigate("TaskDetails", {
+                item: item,
+                markAsComplete: markAsComplete
+              })
+            }
           >
             <Card>
               <Text style={globalStyles.titleText}>{item.title}</Text>
