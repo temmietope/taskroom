@@ -52,6 +52,7 @@ export default function Home({ navigation }) {
 
   const addTask = task => {
     task.key = Math.random().toString();
+    task.completed = false
     setTasks(currentTasks => {
       return [task, ...currentTasks];
     });
@@ -84,7 +85,7 @@ export default function Home({ navigation }) {
   };
 
   return (
-    <View style={globalStyles.container}>
+    <View style={{...globalStyles.container, ...styles.listContainer}}>
       <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.modalContent}>
@@ -102,7 +103,7 @@ export default function Home({ navigation }) {
       <MaterialIcons
         name="add"
         size={24}
-        style={styles.modalToggle}
+        style={{...styles.modalToggle, ...styles.modalOpen}}
         onPress={() => setModalOpen(true)}
       />
 
@@ -128,6 +129,9 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  listContainer: {
+    position: 'relative'
+  },
   modalContent: {
     flex: 1
   },
@@ -142,5 +146,14 @@ const styles = StyleSheet.create({
   modalClose: {
     marginTop: 20,
     marginBottom: 0
+  },
+  modalOpen: {
+    position: 'absolute',
+    bottom: 60,
+    zIndex: 1,
+    right: 30,
+    borderRadius: 50,
+    backgroundColor: 'rgba(255, 192, 203, 0.8)',
+    padding: 20
   }
 });

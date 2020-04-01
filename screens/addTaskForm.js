@@ -32,7 +32,7 @@ export default function AddTaskForm({ addTask }) {
             <TextInput
               style={globalStyles.input}
               placeholder="Task title"
-              onChangeText={props.handleChange(`item[title]`)}
+              onChangeText={props.handleChange("title")}
               value={props.values.title}
               onBlur={props.handleBlur("title")}
             />
@@ -43,7 +43,7 @@ export default function AddTaskForm({ addTask }) {
               multiline
               minHeight={100}
               style={globalStyles.input}
-              placeholder="What should be achieved"
+              placeholder="Task body"
               onChangeText={props.handleChange("body")}
               value={props.values.body}
               onBlur={props.handleBlur("body")}
