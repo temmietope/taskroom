@@ -20,20 +20,35 @@ export default function Home({ navigation }) {
     {
       title: "Cloth Delivery",
       body: "I have to deliver Bunmi's clothes to her on time",
+      completed: false,
       key: "1"
     },
     {
       title: "Groceries Shopping",
       body: "Go to the market and shop for important things",
+      completed: false,
       key: "2"
     },
     {
       title: "Pick kids from school",
       body: "My kids cant be late",
+      completed: false,
       key: "3"
+    },
+    {
+      title: "FIght",
+      body: "Ninja movement, nigga!",
+      completed: false,
+      key: "4"
+    },
+    {
+      title: "Make dinner",
+      body: "Rice and beans with plantain",
+      completed: false,
+      key: "5"
     }
   ]);
-  const [completedTasks, setCompletedTask] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
 
   const addTask = task => {
     task.key = Math.random().toString();
@@ -42,9 +57,21 @@ export default function Home({ navigation }) {
     });
     setModalOpen(false);
   };
-  const markAsComplete = task => {
-    console.log(task);
+
+
+  const markAsComplete = key => {
+    let copiedArray = [...tasks];
+    const idx = copiedArray.findIndex(task => task.key === key);
+    const item = copiedArray[idx];
+    setCompletedTasks(currentTasks => {
+      return [...currentTasks, item];
+    });
+    copiedArray.splice(idx, 1);
+    copiedArray.push(item);
+    setTasks(copiedArray);
   };
+
+  
   return (
     <View style={globalStyles.container}>
       <Modal visible={modalOpen} animationType="slide">
