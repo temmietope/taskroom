@@ -58,20 +58,31 @@ export default function Home({ navigation }) {
     setModalOpen(false);
   };
 
-
   const markAsComplete = key => {
     let copiedArray = [...tasks];
     const idx = copiedArray.findIndex(task => task.key === key);
     const item = copiedArray[idx];
-    setCompletedTasks(currentTasks => {
-      return [...currentTasks, item];
-    });
-    copiedArray.splice(idx, 1);
-    copiedArray.push(item);
-    setTasks(copiedArray);
+    if (!item.completed) {
+      item.completed = true;
+      setCompletedTasks(currentTasks => {
+        return [...currentTasks, item];
+      });
+      copiedArray.splice(idx, 1);
+      copiedArray.push(item);
+      setTasks(copiedArray);
+    } else {
+      item.completed = false;
+      setCompletedTasks(currentTasks => {
+        return currentTasks.filter(task => {
+          task !== item;
+        });
+      });
+      copiedArray.splice(idx, 1);
+      copiedArray.unshift(item);
+      setTasks(copiedArray);
+    }
   };
 
-  
   return (
     <View style={globalStyles.container}>
       <Modal visible={modalOpen} animationType="slide">
@@ -106,7 +117,7 @@ export default function Home({ navigation }) {
               })
             }
           >
-            <Card>
+            <Card completed={item.completed}>
               <Text style={globalStyles.titleText}>{item.title}</Text>
             </Card>
           </TouchableOpacity>

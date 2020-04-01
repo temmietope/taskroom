@@ -1,29 +1,63 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import FlatButton from "../shared/button";
 
-export default function TasksDetails({ navigation }) {
-  const item = navigation.getParam("item");
-  const markAsComplete = navigation.getParam("markAsComplete");
-  return (
-    <View style={globalStyles.container}>
-      <View style={styles.detailsView}>
-        <Text style={styles.taskTitle}>{item.title}</Text>
-        <View style={styles.taskDescription}>
-          <Card>
-            <Text style={styles.taskDescriptionText}>{item.body}</Text>
-          </Card>
-        </View>
+export default class TasksDetails extends Component {
+  state = {
+    buttonText: "",
+    item: {}
+  };
 
-        <FlatButton
-          text="Task Completed"
-          onPress={() => markAsComplete(`${item.key}`)}
-        />
+  componentDidMount() {
+    const item = this.props.navigation.getParam("item");
+    this.setState({
+      item
+    });
+
+    this.renderButtonText(item);
+  }
+  renderButtonText = item => {
+    if (item) {
+      if (item.completed) {
+        this.setState({
+          buttonText: "Mark Incomplete"
+        });
+      } else {
+        this.setState({
+          buttonText: "Task completed"
+        });
+      }
+    }
+  };
+
+  render() {
+    const { item, buttonText } = this.state;
+    const markAsComplete = this.props.navigation.getParam("markAsComplete");
+
+
+    return (
+      <View style={globalStyles.container}>
+        <View style={styles.detailsView}>
+          <Text style={styles.taskTitle}>{item.title}</Text>
+          <View style={styles.taskDescription}>
+            <Card>
+              <Text style={styles.taskDescriptionText}>{item.body}</Text>
+            </Card>
+          </View>
+
+          <FlatButton
+            text={buttonText}
+            onPress={() => {
+              markAsComplete(`${item.key}`);
+              this.renderButtonText(item);
+            }}
+          />
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({

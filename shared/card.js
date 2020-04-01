@@ -1,12 +1,19 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-export default function Card(props) {
-  return (
+export default function Card({ children, completed }) {
+  const RenderNormalCard = () => (
     <View style={styles.card}>
-      <View style={styles.cardContent}>{props.children}</View>
+      <View style={styles.cardContent}>{children}</View>
     </View>
   );
+  const RenderCompletedCard = () => (
+    <View style={{ ...styles.card, ...styles.completedCard }}>
+      <View style={styles.cardContent}>{children}</View>
+    </View>
+  );
+
+  return <>{completed ? <RenderCompletedCard /> : <RenderNormalCard />}</>;
 }
 
 const styles = StyleSheet.create({
@@ -20,8 +27,11 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     marginHorizontal: 4,
     marginVertical: 10,
-    borderColor: 'gray',
+    borderColor: "gray",
     padding: 10
+  },
+  completedCard: {
+    backgroundColor: "rgba(172, 255, 47, 0.637)"
   },
   cardContent: {
     marginHorizontal: 18,
