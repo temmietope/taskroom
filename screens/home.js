@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -54,9 +54,9 @@ export default function Home({ navigation }) {
   const [progress, setProgress] = useState(0);
   // const [val, setVal] = useState(props);
 
-  // useEffect(() => {
-  //     setVal(props);
-  // }, [props])
+  useEffect(() => {
+    trackProgress();
+  }, [completedTasks, tasks, progress]);
 
   // useEffect(() => {
   //   effect
@@ -77,11 +77,10 @@ export default function Home({ navigation }) {
     console.log(completedTasks.length, tasks.length);
     const perc = (completedTasks.length / tasks.length) * 100;
     setProgress(perc);
-    console.log(progress);
+    console.log("progress " + progress);
   };
   const markAsComplete = async key => {
     const idx = tasks.findIndex(task => task.key === key);
-    console.log(idx);
     const item = tasks[idx];
     if (!item.completed) {
       item.completed = true;
@@ -91,67 +90,35 @@ export default function Home({ navigation }) {
         return currentTasks;
       });
       setCompletedTasks(currentTasks => {
-        return [item, ...currentTasks];
+        currentTasks.unshift(item);
+        return currentTasks;
       });
-    } else if(item.completed){
+      console.log("completed task " + completedTasks.length);
+      trackProgress();
+    } else if (item.completed) {
       item.completed = false;
-    // console.log(item);
-     await setTasks(currentTasks => {
-        currentTasks.splice(idx, 1)
-        console.log(item)
-        return [item, ...currentTasks]
-      })
-      console.log(tasks)
-      // // console.log(item.completed);
-      setCompletedTasks(currentTasks => {
-        return currentTasks.filter(task => {
-          task !== item;
-        });
+      await setTasks(currentTasks => {
+        currentTasks.splice(idx, 1);
+        currentTasks.unshift(item);
+        return currentTasks;
       });
-      // setTasks(currentTasks => {
-      //   currentTasks.splice(idx, 1);
-      //   return [item, ...currentTasks];
-      // });
-      // console.log(item);
+      const markedIdx = completedTasks.findIndex(task => task.key === item.key);
+
+      setCompletedTasks(currentTasks => {
+        currentTasks.splice(markedIdx, 1);
+        return currentTasks;
+      });
+      trackProgress();
     }
-
-    // let copiedArray = [...tasks];
-    // const idx = copiedArray.findIndex(task => task.key === key);
-    // const item = copiedArray[idx];
-    // if (!item.completed) {
-    //   item.completed = true;
-    //   copiedArray.splice(idx, 1);
-    //   copiedArray.push(item);
-    //   setTasks(copiedArray);
-    //   // await setCompletedTasks(currentTasks => {
-    //   //   return [...currentTasks, item];
-    //   // });
-    //   // setCompletedTasks([...completedTasks, item])
-    //   completedTasks.push(item);
-    //   console.log(completedTasks);
-    // } else {
-    //   item.completed = false;
-    //   copiedArray.splice(idx, 1);
-    //   copiedArray.unshift(item);
-    //   setTasks(copiedArray);
-    //   await setCompletedTasks(currentTasks => {
-    //     return currentTasks.filter(task => {
-    //       task !== item;
-    //     });
-    //   });
-    // }
-    // console.log(completedTasks.length);
-
-    // trackProgress();
   };
 
   return (
     <View style={{ ...globalStyles.container, ...styles.listContainer }}>
       <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          {console.log(tasks.length, completedTasks.length)}
+          {/* {console.log(tasks.length, completedTasks.length)} */}
 
-          {console.log("the progress is :" + progress)}
+          {/* {console.log("the progress is :" + progress)} */}
           <View style={styles.modalContent}>
             <MaterialIcons
               name="close"
