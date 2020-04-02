@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Slider
 } from "react-native";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import { MaterialIcons } from "@expo/vector-icons";
+// import Slider from 'react-native';
 import AddTaskForm from "./addTaskForm";
 
 export default function Home({ navigation }) {
@@ -49,44 +51,74 @@ export default function Home({ navigation }) {
     }
   ]);
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [progress, setProgress] = useState(0);
+  // const [val, setVal] = useState(props);
+
+  useEffect(() => {
+    trackProgress();
+  }, [completedTasks, tasks, progress]);
+
+  // useEffect(() => {
+  //   effect
+  //   return () => {
+  //     cleanup
+  //   }
+  // }, [input])
 
   const addTask = task => {
     task.key = Math.random().toString();
+    task.completed = false;
     setTasks(currentTasks => {
       return [task, ...currentTasks];
     });
     setModalOpen(false);
   };
-
-  const markAsComplete = key => {
-    let copiedArray = [...tasks];
-    const idx = copiedArray.findIndex(task => task.key === key);
-    const item = copiedArray[idx];
+  const trackProgress = () => {
+    console.log(completedTasks.length, tasks.length);
+    const perc = (completedTasks.length / tasks.length) * 100;
+    setProgress(perc);
+    console.log("progress " + progress);
+  };
+  const markAsComplete = async key => {
+    const idx = tasks.findIndex(task => task.key === key);
+    const item = tasks[idx];
     if (!item.completed) {
       item.completed = true;
-      setCompletedTasks(currentTasks => {
-        return [...currentTasks, item];
+      setTasks(currentTasks => {
+        currentTasks.splice(idx, 1);
+        currentTasks.push(item);
+        return currentTasks;
       });
-      copiedArray.splice(idx, 1);
-      copiedArray.push(item);
-      setTasks(copiedArray);
-    } else {
+      setCompletedTasks(currentTasks => {
+        currentTasks.unshift(item);
+        return currentTasks;
+      });
+      console.log("completed task " + completedTasks.length);
+      trackProgress();
+    } else if (item.completed) {
       item.completed = false;
-      setCompletedTasks(currentTasks => {
-        return currentTasks.filter(task => {
-          task !== item;
-        });
+      await setTasks(currentTasks => {
+        currentTasks.splice(idx, 1);
+        currentTasks.unshift(item);
+        return currentTasks;
       });
-      copiedArray.splice(idx, 1);
-      copiedArray.unshift(item);
-      setTasks(copiedArray);
+      const markedIdx = completedTasks.findIndex(task => task.key === item.key);
+
+      setCompletedTasks(currentTasks => {
+        currentTasks.splice(markedIdx, 1);
+        return currentTasks;
+      });
+      trackProgress();
     }
   };
 
   return (
-    <View style={globalStyles.container}>
+    <View style={{ ...globalStyles.container, ...styles.listContainer }}>
       <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          {/* {console.log(tasks.length, completedTasks.length)} */}
+
+          {/* {console.log("the progress is :" + progress)} */}
           <View style={styles.modalContent}>
             <MaterialIcons
               name="close"
@@ -102,8 +134,19 @@ export default function Home({ navigation }) {
       <MaterialIcons
         name="add"
         size={24}
-        style={styles.modalToggle}
+        style={{ ...styles.modalToggle, ...styles.modalOpen }}
         onPress={() => setModalOpen(true)}
+      />
+
+      <Slider
+        style={{ width: 500, height: 100 }}
+        minimumValue={0}
+        maximumValue={100}
+        // step={50}
+        minimumTrackTintColor="green"
+        maximumTrackTintColor="#000000"
+        value={progress}
+        style={styles.slider}
       />
 
       <FlatList
@@ -128,6 +171,9 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  listContainer: {
+    position: "relative"
+  },
   modalContent: {
     flex: 1
   },
@@ -142,5 +188,17 @@ const styles = StyleSheet.create({
   modalClose: {
     marginTop: 20,
     marginBottom: 0
+  },
+  modalOpen: {
+    position: "absolute",
+    bottom: 60,
+    zIndex: 1,
+    right: 30,
+    borderRadius: 50,
+    backgroundColor: "rgba(255, 192, 203, 0.8)",
+    padding: 20
+  },
+  slider: {
+    backgroundColor: "red"
   }
 });

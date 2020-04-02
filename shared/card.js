@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   completedCard: {
-    backgroundColor: "rgba(172, 255, 47, 0.637)"
+    backgroundColor: "rgba(172, 255, 47, 0.2)"
   },
   cardContent: {
     marginHorizontal: 18,
