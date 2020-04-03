@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
-  Keyboard,
-  Slider
+  Keyboard
 } from "react-native";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddTaskForm from "./addTaskForm";
 import RangeSlider from "../shared/rangeSlider";
+import { colors } from "../styles/color";
 
 export default function Home({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function Home({ navigation }) {
       key: "3"
     },
     {
-      title: "FIght",
+      title: "Fight",
       body: "Ninja movement, nigga!",
       completed: false,
       key: "4"
@@ -65,10 +65,8 @@ export default function Home({ navigation }) {
     setModalOpen(false);
   };
   const trackProgress = () => {
-    console.log(completedTasks.length, tasks.length);
     const perc = Math.ceil((completedTasks.length / tasks.length) * 100);
     setProgress(perc);
-    console.log("progress " + progress);
   };
   const markAsComplete = async key => {
     const idx = tasks.findIndex(task => task.key === key);
@@ -84,7 +82,6 @@ export default function Home({ navigation }) {
         currentTasks.unshift(item);
         return currentTasks;
       });
-      console.log("completed task " + completedTasks.length);
       trackProgress();
     } else if (item.completed) {
       item.completed = false;
@@ -127,16 +124,7 @@ export default function Home({ navigation }) {
       />
 
       <View style={styles.sliderContainer}>
-        <RangeSlider progress={progress}/>
-        {/* <Slider
-          // style={{ width: 500, height: 100 }}
-          minimumValue={0}
-          maximumValue={100}
-          minimumTrackTintColor="green"
-          maximumTrackTintColor="#000000"
-          value={progress}
-          style={styles.slider}
-        /> */}
+        <RangeSlider progress={progress} />
         <Text style={styles.progressText}>{progress}/100</Text>
       </View>
 
@@ -163,7 +151,8 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
   listContainer: {
-    position: "relative"
+    position: "relative",
+    backgroundColor: "#fff"
   },
   modalContent: {
     flex: 1
@@ -174,7 +163,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#f2f2f2",
     alignSelf: "center",
-    borderRadius: 10
+    borderRadius: 10,
+    color: "white"
   },
   modalClose: {
     marginTop: 20,
@@ -186,19 +176,19 @@ const styles = StyleSheet.create({
     zIndex: 1,
     right: 30,
     borderRadius: 50,
-    backgroundColor: "rgba(255, 192, 203, 0.8)",
-    padding: 20
+    backgroundColor: colors.app_color,
+    padding: 15
   },
   sliderContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20
   },
   slider: {
     backgroundColor: "red",
-    width: "80%",
+    width: "80%"
   },
   progressText: {
     fontWeight: "bold",

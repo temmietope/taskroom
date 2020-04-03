@@ -2,8 +2,18 @@ import React from "react";
 import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
+import { colors } from "../styles/color";
+import moment from "moment";
 
-export default function Header({ navigation, title }) {
+// import LOGOSVG from "../assets/calendar.svg"
+// import HeaderIcon from "../assets/calendar.svg";
+
+
+
+const today = moment().format('dddd');
+  const todayDate = moment().format("MMM Do, YYYY"); 
+
+export const Header = ({ navigation, title }) => {
   const openMenu = () => {
     navigation.openDrawer();
   };
@@ -30,7 +40,34 @@ export default function Header({ navigation, title }) {
 
     // </ImageBackground>
   );
-}
+};
+export const HomeHeader = ({ navigation, title }) => {
+  const openMenu = () => {
+    navigation.openDrawer();
+  };
+  return (
+    <View style={styles.homeHeader}>
+      <MaterialIcons
+        name="menu"
+        size={28}
+        onPress={openMenu}
+        style={styles.homeHeaderIcon}
+      />
+      <View style={styles.homeHeaderTitle}>
+        {/* <Image
+          source={require("../assets/calendar.png")}
+          style={styles.homeHeaderImage}
+        /> */}
+        <View style={styles.date}>
+        <Text style={styles.today}>{today}</Text>
+        <Text style={styles.todayDate}>{todayDate}</Text>
+        <Text style={styles.homeHeaderText}>{title}</Text>
+        </View>
+        
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -39,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
-    backgroundColor: 'rgba(255, 192, 203, 0.8)'
+    backgroundColor: colors.app_color
   },
   headerText: {
     fontWeight: "bold",
@@ -58,5 +95,46 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     marginHorizontal: 10
+  },
+  homeHeader: {
+    width: Dimensions.get("window").width,
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "flex-start",
+  },
+  homeHeaderText: {
+    fontWeight: "bold",
+    fontSize: 50,
+    color: "#fff",
+    letterSpacing: 1,
+    fontFamily: "nunito-bold"
+  },
+  homeHeaderIcon: {
+    position: "absolute",
+    left: 20,
+    top: 10
+  },
+  homeHeaderTitle: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    height: "35%",
+    left: 20,
+    position: "absolute",
+    bottom: 20,
+  },
+  homeHeaderImage: {
+    width: 26,
+    height: 26
+  },
+  today: {
+    color: '#fff',
+    fontSize: 15
+  },
+  todayDate: {
+    color: '#fff',
+    fontSize: 20
+
   }
 });
