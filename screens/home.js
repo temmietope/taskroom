@@ -13,8 +13,8 @@ import {
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import { MaterialIcons } from "@expo/vector-icons";
-// import Slider from 'react-native';
 import AddTaskForm from "./addTaskForm";
+import RangeSlider from "../shared/rangeSlider";
 
 export default function Home({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -52,19 +52,10 @@ export default function Home({ navigation }) {
   ]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [progress, setProgress] = useState(0);
-  // const [val, setVal] = useState(props);
 
   useEffect(() => {
     trackProgress();
   }, [completedTasks, tasks, progress]);
-
-  // useEffect(() => {
-  //   effect
-  //   return () => {
-  //     cleanup
-  //   }
-  // }, [input])
-
   const addTask = task => {
     task.key = Math.random().toString();
     task.completed = false;
@@ -75,7 +66,7 @@ export default function Home({ navigation }) {
   };
   const trackProgress = () => {
     console.log(completedTasks.length, tasks.length);
-    const perc = (completedTasks.length / tasks.length) * 100;
+    const perc = Math.ceil((completedTasks.length / tasks.length) * 100);
     setProgress(perc);
     console.log("progress " + progress);
   };
@@ -116,9 +107,6 @@ export default function Home({ navigation }) {
     <View style={{ ...globalStyles.container, ...styles.listContainer }}>
       <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          {/* {console.log(tasks.length, completedTasks.length)} */}
-
-          {/* {console.log("the progress is :" + progress)} */}
           <View style={styles.modalContent}>
             <MaterialIcons
               name="close"
@@ -138,16 +126,19 @@ export default function Home({ navigation }) {
         onPress={() => setModalOpen(true)}
       />
 
-      <Slider
-        style={{ width: 500, height: 100 }}
-        minimumValue={0}
-        maximumValue={100}
-        // step={50}
-        minimumTrackTintColor="green"
-        maximumTrackTintColor="#000000"
-        value={progress}
-        style={styles.slider}
-      />
+      <View style={styles.sliderContainer}>
+        <RangeSlider progress={progress}/>
+        {/* <Slider
+          // style={{ width: 500, height: 100 }}
+          minimumValue={0}
+          maximumValue={100}
+          minimumTrackTintColor="green"
+          maximumTrackTintColor="#000000"
+          value={progress}
+          style={styles.slider}
+        /> */}
+        <Text style={styles.progressText}>{progress}/100</Text>
+      </View>
 
       <FlatList
         data={tasks}
@@ -198,7 +189,20 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 192, 203, 0.8)",
     padding: 20
   },
+  sliderContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: "center",
+    marginBottom: 20
+  },
   slider: {
-    backgroundColor: "red"
+    backgroundColor: "red",
+    width: "80%",
+  },
+  progressText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    marginRight: 0
   }
 });
