@@ -11,7 +11,13 @@ const screens = {
     navigationOptions: ({ navigation }) => {
       return {
         headerTitle: () => <HomeHeader navigation={navigation} title="TODAY" />,
-        headerTitleAlign: "center"
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: colors.app_color,
+          height: 350,
+          borderBottomRightRadius: 15,
+          borderBottomLeftRadius: 15
+        }
       };
     }
   },
@@ -27,10 +33,7 @@ const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTintColor: "#444",
     headerStyle: {
-      backgroundColor: colors.app_color,
-      height: 350,
-      borderBottomRightRadius: 15,
-      borderBottomLeftRadius: 15
+      backgroundColor: colors.app_color
     }
   }
 });
