@@ -22,6 +22,7 @@ export default function Home({ navigation }) {
     {
       title: "Cloth Delivery",
       body: "I have to deliver Bunmi's clothes to her on time",
+      // time: 
       completed: false,
       key: "1"
     },
