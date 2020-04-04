@@ -8,10 +8,8 @@ import moment from "moment";
 // import LOGOSVG from "../assets/calendar.svg"
 // import HeaderIcon from "../assets/calendar.svg";
 
-
-
-const today = moment().format('dddd');
-  const todayDate = moment().format("MMM Do, YYYY"); 
+const today = moment().format("dddd");
+const todayDate = moment().format("MMM Do, YYYY");
 
 export const Header = ({ navigation, title }) => {
   const openMenu = () => {
@@ -59,11 +57,10 @@ export const HomeHeader = ({ navigation, title }) => {
           style={styles.homeHeaderImage}
         /> */}
         <View style={styles.date}>
-        <Text style={styles.today}>{today}</Text>
-        <Text style={styles.todayDate}>{todayDate}</Text>
-        <Text style={styles.homeHeaderText}>{title}</Text>
+          <Text style={styles.today}>{today}</Text>
+          <Text style={styles.todayDate}>{todayDate}</Text>
+          <Text style={styles.homeHeaderText}>{title}</Text>
         </View>
-        
       </View>
     </View>
   );
@@ -101,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "flex-start"
   },
   homeHeaderText: {
     fontWeight: "bold",
@@ -122,19 +119,18 @@ const styles = StyleSheet.create({
     height: "35%",
     left: 20,
     position: "absolute",
-    bottom: 20,
+    bottom: 20
   },
   homeHeaderImage: {
     width: 26,
     height: 26
   },
   today: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 15
   },
   todayDate: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 20
-
   }
 });
