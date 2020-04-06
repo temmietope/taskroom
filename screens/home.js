@@ -22,31 +22,35 @@ export default function Home({ navigation }) {
     {
       title: "Cloth Delivery",
       body: "I have to deliver Bunmi's clothes to her on time",
-      // time:
+      time: "10: 00 am",
       completed: false,
       key: "1"
     },
     {
       title: "Groceries Shopping",
       body: "Go to the market and shop for important things",
+      time: "10: 00 am",
       completed: false,
       key: "2"
     },
     {
       title: "Pick kids from school",
       body: "My kids cant be late",
+      time: "10: 00 am",
       completed: false,
       key: "3"
     },
     {
       title: "Fight",
       body: "Ninja movement, nigga!",
+      time: "10: 00 am",
       completed: false,
       key: "4"
     },
     {
       title: "Make dinner",
       body: "Rice and beans with plantain",
+      time: "10: 00 am",
       completed: false,
       key: "5"
     }
@@ -142,6 +146,7 @@ export default function Home({ navigation }) {
           >
             <Card completed={item.completed}>
               <Text style={globalStyles.titleText}>{item.title}</Text>
+              <Text style={styles.timeText}>{item.time}</Text>
             </Card>
           </TouchableOpacity>
         )}
@@ -195,5 +200,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     marginRight: 0
+  },
+  timeText: {
+    fontSize: 12,
   }
+
 });

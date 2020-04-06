@@ -7,26 +7,26 @@ import FlatButton from "../shared/button";
 export default class TasksDetails extends Component {
   state = {
     buttonText: "",
-    item: {}
+    item: {},
   };
 
   componentDidMount() {
     const item = this.props.navigation.getParam("item");
     this.setState({
-      item
+      item,
     });
 
     this.renderButtonText(item);
   }
-  renderButtonText = item => {
+  renderButtonText = (item) => {
     if (item) {
       if (item.completed) {
         this.setState({
-          buttonText: "Mark Incomplete"
+          buttonText: "Mark Incomplete",
         });
       } else {
         this.setState({
-          buttonText: "Task completed"
+          buttonText: "Task completed",
         });
       }
     }
@@ -36,7 +36,6 @@ export default class TasksDetails extends Component {
     const { item, buttonText } = this.state;
     const markAsComplete = this.props.navigation.getParam("markAsComplete");
 
-
     return (
       <View style={globalStyles.container}>
         <View style={styles.detailsView}>
@@ -44,6 +43,7 @@ export default class TasksDetails extends Component {
           <View style={styles.taskDescription}>
             <Card>
               <Text style={styles.taskDescriptionText}>{item.body}</Text>
+              <Text style={styles.taskDescriptionTimeText}>{item.time}</Text>
             </Card>
           </View>
 
@@ -72,22 +72,23 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     borderColor: "gray",
     padding: 10,
-    height: "100%"
+    height: "100%",
   },
   taskTitle: {
     fontSize: 25,
     textAlign: "center",
     width: "100%",
     padding: 10,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   taskDescription: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   taskDescriptionText: {
-    fontSize: 16
+    fontSize: 16,
   },
-  taskComplete: {
-    backgroundColor: "red"
-  }
+  taskDescriptionTimeText: {
+    fontSize: 10,
+    textAlign:'right'
+  },
 });
