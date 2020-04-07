@@ -7,7 +7,6 @@ import * as yup from "yup";
 import FlatButton from "../shared/button";
 import moment from "moment";
 
-
 const taskSchema = yup.object({
   title: yup.string().required().min(4),
   body: yup.string().required().min(8),
@@ -15,38 +14,39 @@ const taskSchema = yup.object({
 
 export default function AddTaskForm({ addTask }) {
   const [show, setShow] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState("timr");
+  // const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    console.log('selected date '+selectedDate)
-    console.log(event)
-    setShow(true);
-    setDate(currentDate);
-    console.log(date)
-  };
+  // const onChange = (event, selectedDate) => {
+  //   const currentDate = selectedDate || date;
+  //   console.log("selected date " + selectedDate);
+  //   console.log(event);
+  //   setShow(true);
+  //   setDate(currentDate);
+  //   console.log(date);
+  // };
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
   };
 
-  // const showDatepicker = () => {
-  //   showMode("date");
-  // };
+  const showDatepicker = () => {
+    showMode("date");
+  };
 
   const showTimepicker = () => {
-    console.log('hey')
+    console.log("hey");
     showMode("time");
   };
 
   return (
     <View style={globalStyles.container}>
       <Formik
-        initialValues={{ title: "", body: "" }}
+        initialValues={{ title: "", body: "", selectedDate: new Date() }}
         validationSchema={taskSchema}
         onSubmit={(values, actions) => {
           actions.resetForm();
+          console.log(values);
           addTask(values);
         }}
       >
@@ -63,14 +63,14 @@ export default function AddTaskForm({ addTask }) {
               {props.touched.title && props.errors.title}
             </Text>
 
-            {/* <View>
+            <View>
               <Button onPress={showDatepicker} title="Show date picker!" />
-            </View> */}
+            </View>
             <View>
               <Button onPress={showTimepicker} title="Show time picker!" />
             </View>
 
-            {show && (
+            {/* {show && (
               <DateTimePicker
                 testID="dateTimePicker"
                 timeZoneOffsetInMinutes={0}
@@ -80,6 +80,24 @@ export default function AddTaskForm({ addTask }) {
                 display="default"
                 onChange={onChange}
                 minimumDate= {new Date()}
+              />
+            )} */}
+
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                timeZoneOffsetInMinutes={0}
+                value={props.values.selectedDate}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                // onChange={onChange}
+                onChange={(event, selectedDate) => {
+                  // const currentDate = selectedDate || date;
+                  // setShow(true);
+                  props.handleChange("selectedDate");
+                }}
+                minimumDate={new Date()}
               />
             )}
 
