@@ -99,6 +99,7 @@ export default function AddTaskForm({ addTask }) {
         title: "",
         body: "",
         myDate: moment().format("YYYY-MM-DD"),
+        myTime: moment().format("HH-MM")
       }}
       validationSchema={taskSchema}
       onSubmit={(values, actions) => {
@@ -142,6 +143,7 @@ export const MyForm = (props) => {
   } = props;
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -150,9 +152,15 @@ export const MyForm = (props) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
+  const handleConfirmDate = (date) => {
     setFieldValue("myDate", moment(date).format("YYYY-MM-DD"));
-    console.log(date);
+    // console.log(myDate);
+    hideDatePicker();
+  };
+
+  const handleConfirmTime = (time) => {
+    setFieldValue("myTime", moment(time).format("HH-MM"));
+    // console.log(myDate);
     hideDatePicker();
   };
 
@@ -169,9 +177,6 @@ export const MyForm = (props) => {
         {touched.title && errors.title}
       </Text>
 
-      <FlatButton onPress={showDatePicker} text=" date and time" />
-      <Text>{moment(values.myDate).format("YYYY-MM-DD")}</Text>
-
       <TextInput
         multiline
         minHeight={100}
@@ -183,13 +188,33 @@ export const MyForm = (props) => {
       />
       <Text style={globalStyles.errorText}>{touched.body && errors.body}</Text>
 
+      <FlatButton onPress={showDatePicker} text="Select date" />
+      <Text>{moment(values.myDate).format("YYYY-MM-DD")}</Text>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
-        mode="datetime"
-        onConfirm={handleConfirm}
+        mode="date"
+        onConfirm={handleConfirmDate}
         onCancel={hideDatePicker}
         date={moment(values.myDate).toDate()}
       />
+
+
+
+{/* <FlatButton onPress={showDatePicker} text="Select Time" />
+      <Text>{moment(values.myTime).format("HH-MM")}</Text>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="time"
+        onConfirm={handleConfirmTime}
+        onCancel={hideDatePicker}
+        date={moment(values.myTime).toDate()}
+      /> */}
+
+
+
+
+
+      
 
       <FlatButton text="submit" onPress={handleSubmit} />
 
