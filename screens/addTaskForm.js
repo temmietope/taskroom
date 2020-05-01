@@ -1,25 +1,53 @@
 import React, { useState } from "react";
-import { TextInput, View, Text, Button } from "react-native";
+import { TextInput, View, Text, Button, StyleSheet } from "react-native";
 import { globalStyles } from "../styles/global";
 import { Formik } from "formik";
 import * as yup from "yup";
 import FlatButton from "../shared/button";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 
 const AddTaskForm = ({ addTask }) => {
-  const [formInput, setFormInput] = useState({ title: "", body: "" });
-  const onChange = (e) => {
-    setFormInput({ ...formInput, [e.target.name]: e.target.value });
+  const [formInput, setFormInput] = useState({
+    title: "",
+    body: "",
+    date: "",
+    time: "",
+  });
+  const [formError, setFormError] = useState("");
+  const taskSchema = yup.object({
+    title: yup.string().required().min(4),
+    body: yup.string().required().min(8),
+  });
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
   };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    hideDatePicker();
+  };
+
   const handleSubmit = () => {
-    addTask(formInput)
+    // taskSchema.validate(formInput, { abortEarly: false }).catch((err) => {
+    //   console.log(err.name);
+    //   console.log(err.errors);
+    // });
+    addTask(formInput);
   };
   return (
     <View style={globalStyles.container}>
       <TextInput
         style={{ ...globalStyles.input, marginBottom: 20 }}
         placeholder="Task title"
-        onChangeText={onChange}
+        // onChangeText={onChange}
         onChangeText={(text) => {
           setFormInput({ ...formInput, title: text });
         }}
@@ -27,6 +55,7 @@ const AddTaskForm = ({ addTask }) => {
         // value={props.values.title}
         // onBlur={props.handleBlur("title")}
       />
+      <Text>{formError}</Text>
 
       <TextInput
         multiline
@@ -41,12 +70,46 @@ const AddTaskForm = ({ addTask }) => {
         // value={props.values.body}
         // onBlur={props.handleBlur("body")}
       />
+      <Text>{formError}</Text>
+
+      <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Text style={styles.buttonText}>{text}</Text>
+      </View>
+    </TouchableOpacity>
+
+
+
+      <Button title="Show Date Picker" onPress={showDatePicker} style={styles.button} />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="datetime"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
 
       <FlatButton text="submit" onPress={handleSubmit} />
     </View>
   );
 };
 
+
+
+const styles = StyleSheet.create({
+  button: {
+    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor: "#5886fade"
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 16,
+    textAlign: "center"
+  }
+});
 export default AddTaskForm;
 
 // const taskSchema = yup.object({
