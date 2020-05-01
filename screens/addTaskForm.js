@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, View, Text, Button, StyleSheet } from "react-native";
+import { TextInput, View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { globalStyles } from "../styles/global";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -72,15 +72,12 @@ const AddTaskForm = ({ addTask }) => {
       />
       <Text>{formError}</Text>
 
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={showDatePicker}>
       <View style={styles.button}>
-        <Text style={styles.buttonText}>{text}</Text>
+        <Text style={styles.buttonText}>Show Date Picker</Text>
       </View>
     </TouchableOpacity>
 
-
-
-      <Button title="Show Date Picker" onPress={showDatePicker} style={styles.button} />
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="datetime"
@@ -100,7 +97,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 14,
     paddingHorizontal: 10,
-    backgroundColor: "#5886fade"
+    backgroundColor: "#5886fade",
+    marginBottom: 20,
+    width: 50
   },
   buttonText: {
     color: "white",
