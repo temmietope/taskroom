@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { TextInput, View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  TextInput,
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { globalStyles } from "../styles/global";
-import { Formik } from "formik";
-import * as yup from "yup";
+// import * as yup from "yup";
 import FlatButton from "../shared/button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -14,11 +20,16 @@ const AddTaskForm = ({ addTask }) => {
     date: "",
     time: "",
   });
-  const [formError, setFormError] = useState("");
-  const taskSchema = yup.object({
-    title: yup.string().required().min(4),
-    body: yup.string().required().min(8),
+  const [formError, setFormError] = useState({
+    title: "",
+    body: "",
+    date: "",
+    time: "",
   });
+  // const taskSchema = yup.object({
+  //   title: yup.string().required().min(4),
+  //   body: yup.string().required().min(8),
+  // });
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -32,6 +43,8 @@ const AddTaskForm = ({ addTask }) => {
 
   const handleConfirm = (date) => {
     console.warn("A date has been picked: ", date);
+    // setFormInput
+    // moment.format().()
     hideDatePicker();
   };
 
@@ -40,7 +53,23 @@ const AddTaskForm = ({ addTask }) => {
     //   console.log(err.name);
     //   console.log(err.errors);
     // });
-    addTask(formInput);
+    if (formInput.title === "") {
+      setFormError({ ...formError, title: "You cannot leave Title blank" });
+    } else if (formInput.title.length< 5) {
+      setFormError({
+        ...formError,
+        title: "Title must not be less than 5 characters",
+      });
+    } 
+    else if (formInput.date === "") {
+      setFormError({
+        ...formError,
+        title: "Please select a schedule for task",
+      });
+    } 
+    else {
+      addTask(formInput);
+    }
   };
   return (
     <View style={globalStyles.container}>
@@ -55,7 +84,7 @@ const AddTaskForm = ({ addTask }) => {
         // value={props.values.title}
         // onBlur={props.handleBlur("title")}
       />
-      <Text>{formError}</Text>
+      <Text>{formError.title}</Text>
 
       <TextInput
         multiline
@@ -70,13 +99,15 @@ const AddTaskForm = ({ addTask }) => {
         // value={props.values.body}
         // onBlur={props.handleBlur("body")}
       />
-      <Text>{formError}</Text>
+      {/* <Text>{formError}</Text> */}
 
       <TouchableOpacity onPress={showDatePicker}>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Show Date Picker</Text>
-      </View>
-    </TouchableOpacity>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Select date and time</Text>
+        </View>
+      </TouchableOpacity>
+
+      <Text>{formError.date}</Text>
 
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -90,24 +121,22 @@ const AddTaskForm = ({ addTask }) => {
   );
 };
 
-
-
 const styles = StyleSheet.create({
   button: {
     borderRadius: 8,
-    paddingVertical: 14,
+    paddingVertical: 8,
     paddingHorizontal: 10,
-    backgroundColor: "#5886fade",
     marginBottom: 20,
-    width: 50
+    width: 200,
+    backgroundColor: "#dd0e0ed7",
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
     textTransform: "uppercase",
     fontSize: 16,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 export default AddTaskForm;
 
