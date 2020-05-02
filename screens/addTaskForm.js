@@ -3,12 +3,10 @@ import {
   TextInput,
   View,
   Text,
-  Button,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import { globalStyles } from "../styles/global";
-// import * as yup from "yup";
 import FlatButton from "../shared/button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -24,12 +22,7 @@ const AddTaskForm = ({ addTask }) => {
     title: "",
     body: "",
     date: "",
-    time: "",
   });
-  // const taskSchema = yup.object({
-  //   title: yup.string().required().min(4),
-  //   body: yup.string().required().min(8),
-  // });
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -42,72 +35,93 @@ const AddTaskForm = ({ addTask }) => {
   };
 
   const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
+    hideDatePicker();
+
+    console.warn("A date has been picked: ", moment(date).format("YYYY-MM-DD"));
     // setFormInput
     // moment.format().()
-    hideDatePicker();
+    // moment(date).format("YYYY-MM-DD")
+    setFormInput({
+      ...formInput,
+      date: moment(date).format("YYYY-MM-DD"),
+      time: moment(date).format("hh:mm a"),
+    });
   };
 
-  const handleSubmit = () => {
-    // taskSchema.validate(formInput, { abortEarly: false }).catch((err) => {
-    //   console.log(err.name);
-    //   console.log(err.errors);
-    // });
+  const handleSubmit = async () => {
+    let errObject = {
+      title: "",
+      body: "",
+      date: "",
+    };
     if (formInput.title === "") {
-      setFormError({ ...formError, title: "You cannot leave Title blank" });
-    } else if (formInput.title.length< 5) {
-      setFormError({
-        ...formError,
-        title: "Title must not be less than 5 characters",
-      });
+      errObject.title = "You cannot leave Title blank";
+      // setFormError({ ...formError, title: "You cannot leave Title blank" });
+    } else if (formInput.body === "") {
+      errObject.body = "Please enter a brief description of your task";
+      // setFormError({
+      //   ...formError,
+      //   body: "Please enter a brief description of your task",
+      // });
+    } else if (formInput.date === "") {
+      errObject.date = "Please select a schedule for task";
+      // setFormError({
+      //   ...formError,
+      //   title: "Please select a schedule for task",
+      // });
     } 
-    else if (formInput.date === "") {
-      setFormError({
-        ...formError,
-        title: "Please select a schedule for task",
-      });
-    } 
-    else {
-      addTask(formInput);
-    }
+    await setFormInput({
+      title: errObject.title,
+      body: errObject.body,
+      date: errObject.date,
+    })
+    // else {
+    //   addTask(formInput);
+    // }
   };
   return (
     <View style={globalStyles.container}>
-      <TextInput
-        style={{ ...globalStyles.input, marginBottom: 20 }}
-        placeholder="Task title"
-        // onChangeText={onChange}
-        onChangeText={(text) => {
-          setFormInput({ ...formInput, title: text });
-        }}
-        // onChangeText={props.handleChange("title")}
-        // value={props.values.title}
-        // onBlur={props.handleBlur("title")}
-      />
-      <Text>{formError.title}</Text>
+      <View>
+        <TextInput
+          style={{ ...globalStyles.input, marginBottom: 20 }}
+          placeholder="Task title"
+          // onChangeText={onChange}
+          onChangeText={(text) => {
+            setFormInput({ ...formInput, title: text });
+          }}
+          // onChangeText={props.handleChange("title")}
+          // value={props.values.title}
+          // onBlur={props.handleBlur("title")}
+        />
+        <Text>{formError.title}</Text>
+      </View>
 
-      <TextInput
-        multiline
-        minHeight={100}
-        style={{ ...globalStyles.input, marginBottom: 20 }}
-        placeholder="Task body"
-        onChangeText={(text) => {
-          setFormInput({ ...formInput, body: text });
-        }}
+      <View>
+        <TextInput
+          multiline
+          minHeight={100}
+          style={{ ...globalStyles.input, marginBottom: 20 }}
+          placeholder="Task body"
+          onChangeText={(text) => {
+            setFormInput({ ...formInput, body: text });
+          }}
 
-        // onChangeText={props.handleChange("body")}
-        // value={props.values.body}
-        // onBlur={props.handleBlur("body")}
-      />
-      {/* <Text>{formError}</Text> */}
+          // onChangeText={props.handleChange("body")}
+          // value={props.values.body}
+          // onBlur={props.handleBlur("body")}
+        />
+        <Text>{formError.body}</Text>
+      </View>
 
-      <TouchableOpacity onPress={showDatePicker}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Select date and time</Text>
-        </View>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={showDatePicker}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Select date and time</Text>
+          </View>
+        </TouchableOpacity>
 
-      <Text>{formError.date}</Text>
+        <Text>{formError.date}</Text>
+      </View>
 
       <DateTimePickerModal
         isVisible={isDatePickerVisible}

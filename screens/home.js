@@ -64,6 +64,7 @@ export default function Home({ navigation }) {
   const addTask = task => {
     task.key = Math.random().toString();
     task.completed = false;
+    console.log(task)
     setTasks(currentTasks => {
       return [task, ...currentTasks];
     });
