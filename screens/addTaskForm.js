@@ -48,36 +48,63 @@ const AddTaskForm = ({ addTask }) => {
     });
   };
 
-  const handleSubmit = async () => {
+  const checkInput = (obj) => {
     let errObject = {
       title: "",
       body: "",
       date: "",
     };
-    if (formInput.title === "") {
+    if (obj.title === "") {
       errObject.title = "You cannot leave Title blank";
-      // setFormError({ ...formError, title: "You cannot leave Title blank" });
-    } else if (formInput.body === "") {
+    }
+    if (obj.body === "") {
       errObject.body = "Please enter a brief description of your task";
-      // setFormError({
-      //   ...formError,
-      //   body: "Please enter a brief description of your task",
-      // });
-    } else if (formInput.date === "") {
+    }
+    if (obj.date === "") {
       errObject.date = "Please select a schedule for task";
-      // setFormError({
-      //   ...formError,
-      //   title: "Please select a schedule for task",
-      // });
-    } 
-    await setFormInput({
-      title: errObject.title,
-      body: errObject.body,
-      date: errObject.date,
-    })
+    }
+    return errObject;
+  };
+
+  const handleSubmit = async () => {
+    // let errObject = {
+    //   title: "",
+    //   body: "",
+    //   date: "",
+    // };
+    // if (formInput.title === "") {
+    //   errObject.title = "You cannot leave Title blank";
+    //   // setFormError({ ...formError, title: "You cannot leave Title blank" });
+    // } else if (formInput.body === "") {
+    //   errObject.body = "Please enter a brief description of your task";
+    //   // setFormError({
+    //   //   ...formError,
+    //   //   body: "Please enter a brief description of your task",
+    //   // });
+    // } else if (formInput.date === "") {
+    //   errObject.date = "Please select a schedule for task";
+    //   // setFormError({
+    //   //   ...formError,
+    //   //   title: "Please select a schedule for task",
+    //   // });
+    // }
+    // await setFormError({
+    //   title: errObject.title,
+    //   body: errObject.body,
+    //   date: errObject.date,
+    // });
     // else {
     //   addTask(formInput);
     // }
+
+    let err = await checkInput(formInput);
+    if (err.title !== "" || body !== "" || date !== "") {
+      return setFormError({
+        title: err.title,
+        body: err.body,
+        date: err.date,
+      });
+    } else addTask(formInput);
   };
   return (
     <View style={globalStyles.container}>
@@ -89,9 +116,6 @@ const AddTaskForm = ({ addTask }) => {
           onChangeText={(text) => {
             setFormInput({ ...formInput, title: text });
           }}
-          // onChangeText={props.handleChange("title")}
-          // value={props.values.title}
-          // onBlur={props.handleBlur("title")}
         />
         <Text>{formError.title}</Text>
       </View>
@@ -105,10 +129,6 @@ const AddTaskForm = ({ addTask }) => {
           onChangeText={(text) => {
             setFormInput({ ...formInput, body: text });
           }}
-
-          // onChangeText={props.handleChange("body")}
-          // value={props.values.body}
-          // onBlur={props.handleBlur("body")}
         />
         <Text>{formError.body}</Text>
       </View>
@@ -153,79 +173,3 @@ const styles = StyleSheet.create({
   },
 });
 export default AddTaskForm;
-
-// const taskSchema = yup.object({
-//   title: yup.string().required().min(4),
-//   body: yup.string().required().min(8),
-// });
-
-// export default function AddTaskForm({ addTask }) {
-
-//   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-//   const showDatePicker = () => {
-//     setDatePickerVisibility(true);
-//   };
-
-//   const hideDatePicker = () => {
-//     setDatePickerVisibility(false);
-//   };
-
-//   const handleConfirm = (date) => {
-//     console.warn("A date has been picked: ", date);
-//     hideDatePicker();
-//   };
-
-//   return (
-//     <View style={globalStyles.container}>
-//       <Formik
-//         initialValues={{
-//           title: "",
-//           body: "",
-//         }}
-//         validationSchema={taskSchema}
-//         onSubmit={(values, actions) => {
-//           actions.resetForm();
-//           console.log(values);
-//           addTask(values);
-//         }}
-//       >
-//         {(props) => (
-//           <View>
-//             <TextInput
-//               style={globalStyles.input}
-//               placeholder="Task title"
-//               onChangeText={props.handleChange("title")}
-//               value={props.values.title}
-//               onBlur={props.handleBlur("title")}
-//             />
-//             <Text style={globalStyles.errorText}>
-//               {props.touched.title && props.errors.title}
-//             </Text>
-
-//             <TextInput
-//               multiline
-//               minHeight={100}
-//               style={globalStyles.input}
-//               placeholder="Task body"
-//               onChangeText={props.handleChange("body")}
-//               value={props.values.body}
-//               onBlur={props.handleBlur("body")}
-//             />
-//             <Text style={globalStyles.errorText}>
-//               {props.touched.body && props.errors.body}
-//             </Text>
-//             <View>
-//               <Text>today</Text>
-//               <FlatButton text="Add date" />
-//               <Text>time</Text>
-//               <FlatButton text="Add time" />
-//             </View>
-
-//             <FlatButton text="submit" onPress={props.handleSubmit} />
-//           </View>
-//         )}
-//       </Formik>
-//     </View>
-//   );
-// }
