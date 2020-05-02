@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
@@ -24,36 +24,36 @@ export default function Home({ navigation }) {
       body: "I have to deliver Bunmi's clothes to her on time",
       time: "10: 00 am",
       completed: false,
-      key: "1"
+      key: "1",
     },
     {
       title: "Groceries Shopping",
       body: "Go to the market and shop for important things",
       time: "10: 00 am",
       completed: false,
-      key: "2"
+      key: "2",
     },
     {
       title: "Pick kids from school",
       body: "My kids cant be late",
       time: "10: 00 am",
       completed: false,
-      key: "3"
+      key: "3",
     },
     {
       title: "Fight",
       body: "Ninja movement, nigga!",
       time: "10: 00 am",
       completed: false,
-      key: "4"
+      key: "4",
     },
     {
       title: "Make dinner",
       body: "Rice and beans with plantain",
       time: "10: 00 am",
       completed: false,
-      key: "5"
-    }
+      key: "5",
+    },
   ]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -61,10 +61,10 @@ export default function Home({ navigation }) {
   useEffect(() => {
     trackProgress();
   }, [completedTasks, tasks, progress]);
-  const addTask = task => {
+  const addTask = (task) => {
     task.key = Math.random().toString();
     task.completed = false;
-    setTasks(currentTasks => {
+    setTasks((currentTasks) => {
       return [task, ...currentTasks];
     });
     setModalOpen(false);
@@ -73,31 +73,33 @@ export default function Home({ navigation }) {
     const perc = Math.ceil((completedTasks.length / tasks.length) * 100);
     setProgress(perc);
   };
-  const markAsComplete = async key => {
-    const idx = tasks.findIndex(task => task.key === key);
+  const markAsComplete = async (key) => {
+    const idx = tasks.findIndex((task) => task.key === key);
     const item = tasks[idx];
     if (!item.completed) {
       item.completed = true;
-      setTasks(currentTasks => {
+      setTasks((currentTasks) => {
         currentTasks.splice(idx, 1);
         currentTasks.push(item);
         return currentTasks;
       });
-      setCompletedTasks(currentTasks => {
+      setCompletedTasks((currentTasks) => {
         currentTasks.unshift(item);
         return currentTasks;
       });
       trackProgress();
     } else if (item.completed) {
       item.completed = false;
-      await setTasks(currentTasks => {
+      await setTasks((currentTasks) => {
         currentTasks.splice(idx, 1);
         currentTasks.unshift(item);
         return currentTasks;
       });
-      const markedIdx = completedTasks.findIndex(task => task.key === item.key);
+      const markedIdx = completedTasks.findIndex(
+        (task) => task.key === item.key
+      );
 
-      setCompletedTasks(currentTasks => {
+      setCompletedTasks((currentTasks) => {
         currentTasks.splice(markedIdx, 1);
         return currentTasks;
       });
@@ -140,7 +142,7 @@ export default function Home({ navigation }) {
             onPress={() =>
               navigation.navigate("TaskDetails", {
                 item: item,
-                markAsComplete: markAsComplete
+                markAsComplete: markAsComplete,
               })
             }
           >
@@ -158,10 +160,10 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   listContainer: {
     position: "relative",
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   modalContent: {
-    flex: 1
+    flex: 1,
   },
   modalToggle: {
     marginBottom: 10,
@@ -170,11 +172,11 @@ const styles = StyleSheet.create({
     borderColor: "#f2f2f2",
     alignSelf: "center",
     borderRadius: 10,
-    color: "white"
+    color: "white",
   },
   modalClose: {
     marginTop: 20,
-    marginBottom: 0
+    marginBottom: 0,
   },
   modalOpen: {
     position: "absolute",
@@ -183,26 +185,25 @@ const styles = StyleSheet.create({
     right: 30,
     borderRadius: 50,
     backgroundColor: colors.app_color,
-    padding: 15
+    padding: 15,
   },
   sliderContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   slider: {
     backgroundColor: "red",
-    width: "80%"
+    width: "80%",
   },
   progressText: {
     fontWeight: "bold",
     fontSize: 16,
-    marginRight: 0
+    marginRight: 0,
   },
   timeText: {
     fontSize: 12,
-  }
-
+  },
 });
