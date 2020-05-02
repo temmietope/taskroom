@@ -36,11 +36,6 @@ const AddTaskForm = ({ addTask }) => {
 
   const handleConfirm = (date) => {
     hideDatePicker();
-
-    console.warn("A date has been picked: ", moment(date).format("YYYY-MM-DD"));
-    // setFormInput
-    // moment.format().()
-    // moment(date).format("YYYY-MM-DD")
     setFormInput({
       ...formInput,
       date: moment(date).format("YYYY-MM-DD"),
@@ -67,36 +62,6 @@ const AddTaskForm = ({ addTask }) => {
   };
 
   const handleSubmit = async () => {
-    // let errObject = {
-    //   title: "",
-    //   body: "",
-    //   date: "",
-    // };
-    // if (formInput.title === "") {
-    //   errObject.title = "You cannot leave Title blank";
-    //   // setFormError({ ...formError, title: "You cannot leave Title blank" });
-    // } else if (formInput.body === "") {
-    //   errObject.body = "Please enter a brief description of your task";
-    //   // setFormError({
-    //   //   ...formError,
-    //   //   body: "Please enter a brief description of your task",
-    //   // });
-    // } else if (formInput.date === "") {
-    //   errObject.date = "Please select a schedule for task";
-    //   // setFormError({
-    //   //   ...formError,
-    //   //   title: "Please select a schedule for task",
-    //   // });
-    // }
-    // await setFormError({
-    //   title: errObject.title,
-    //   body: errObject.body,
-    //   date: errObject.date,
-    // });
-    // else {
-    //   addTask(formInput);
-    // }
-
     let err = await checkInput(formInput);
     if (err.title !== "" || body !== "" || date !== "") {
       return setFormError({
@@ -108,39 +73,39 @@ const AddTaskForm = ({ addTask }) => {
   };
   return (
     <View style={globalStyles.container}>
-      <View>
+      <View style={styles.inputBar}>
         <TextInput
-          style={{ ...globalStyles.input, marginBottom: 20 }}
+          style={globalStyles.input}
           placeholder="Task title"
           // onChangeText={onChange}
           onChangeText={(text) => {
             setFormInput({ ...formInput, title: text });
           }}
         />
-        <Text>{formError.title}</Text>
+        <Text style={styles.err}>{formError.title}</Text>
       </View>
 
-      <View>
+      <View style={styles.inputBar}>
         <TextInput
           multiline
           minHeight={100}
-          style={{ ...globalStyles.input, marginBottom: 20 }}
+          style={globalStyles.input}
           placeholder="Task body"
           onChangeText={(text) => {
             setFormInput({ ...formInput, body: text });
           }}
         />
-        <Text>{formError.body}</Text>
+        <Text style={styles.err}>{formError.body}</Text>
       </View>
 
-      <View>
+      <View style={styles.inputBar}>
         <TouchableOpacity onPress={showDatePicker}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>Select date and time</Text>
           </View>
         </TouchableOpacity>
 
-        <Text>{formError.date}</Text>
+        <Text style={styles.err}>{formError.date}</Text>
       </View>
 
       <DateTimePickerModal
@@ -149,7 +114,6 @@ const AddTaskForm = ({ addTask }) => {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-
       <FlatButton text="submit" onPress={handleSubmit} />
     </View>
   );
@@ -160,7 +124,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 10,
-    marginBottom: 20,
     width: 200,
     backgroundColor: "#dd0e0ed7",
   },
@@ -170,6 +133,12 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     fontSize: 16,
     textAlign: "center",
+  },
+  inputBar: {
+    marginBottom: 20,
+  },
+  err: {
+    color: "#dd0e0ed7",
   },
 });
 export default AddTaskForm;
