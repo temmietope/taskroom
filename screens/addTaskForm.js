@@ -63,13 +63,15 @@ const AddTaskForm = ({ addTask }) => {
 
   const handleSubmit = async () => {
     let err = await checkInput(formInput);
-    if (err.title !== "" || body !== "" || date !== "") {
+    if (err.title !== "" || err.body !== "" || err.date !== "") {
       return setFormError({
         title: err.title,
         body: err.body,
         date: err.date,
       });
-    } else addTask(formInput);
+    } else {
+      addTask(formInput);
+    }
   };
   return (
     <View style={globalStyles.container}>
