@@ -13,11 +13,18 @@ import moment from "moment";
 
 const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
   const [formInput, setFormInput] = useState({
-    title: "",
-    body: "",
-    date: "",
-    time: "",
+    title: `${editMode ? itemToEdit.title : ""}`,
+    body: `${editMode ? itemToEdit.body : ""}`,
+    date: `${editMode ? itemToEdit.date : ""}`,
+    time: `${editMode ? itemToEdit.time : ""}`,
+    key: `${editMode ? itemToEdit.key : ""}`
   });
+  // const [editFormInput, setEditForm] = useState({
+  //   title: itemToEdit.title,
+  //   body: itemToEdit.body,
+  //   date: itemToEdit.date,
+  //   time: itemToEdit.time,
+  // });
   const [formError, setFormError] = useState({
     title: "",
     body: "",
@@ -62,9 +69,11 @@ const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
   };
 
   const handleSubmit = async () => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    console.log(formInput)
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    console.log(formInput);
+    console.log("+++++++++++++++++++++")
     let err = await checkInput(formInput);
+    console.log(err)
     if (err.title !== "" || err.body !== "" || err.date !== "") {
       return setFormError({
         title: err.title,
@@ -77,7 +86,6 @@ const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
   };
   return (
     <View style={globalStyles.container}>
-      {console.log(itemToEdit)}
       <View style={styles.inputBar}>
         <TextInput
           style={globalStyles.input}
@@ -86,17 +94,18 @@ const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
           // onChangeText={onChange}
           onChangeText={(text) => {
             setFormInput({ ...formInput, title: text });
+            console.log(formInput.title)
           }}
         />
         <Text style={styles.err}>{formError.title}</Text>
       </View>
-
       <View style={styles.inputBar}>
         <TextInput
           multiline
           minHeight={100}
           style={globalStyles.input}
           placeholder="Task body"
+          value={formInput.body}
           onChangeText={(text) => {
             setFormInput({ ...formInput, body: text });
           }}

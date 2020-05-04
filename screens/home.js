@@ -66,12 +66,41 @@ export default function Home({ navigation }) {
   }, [completedTasks, tasks, progress]);
 
   const addTask = (task) => {
-    task.key = Math.random().toString();
-    task.completed = false;
-    setTasks((currentTasks) => {
-      return [task, ...currentTasks];
-    });
+    // setItemToEdit({})'
+    console.log("takerrrr");
+    console.log(task);
+    if (task.key) {
+      // const editIdx = tasks.findIndex((t) => t.key === task.key);
+      // // console.log("0000000000000000000000000");
+      // // console.log(tasks[editIdx]);
+
+      // // setTasks([...tasks, tasks[editIdx]]);
+
+      // const targetTask = tasks[editIdx]
+
+      setTasks((currentTasks) => {
+        currentTasks.forEach((t) => {
+          if (t.key === task.key) {
+            t = { ...task };
+          }
+        });
+      });
+
+      // setTasks((currentTasks) => {
+      //   currentTasks.splice(editIdx, 1);
+      //   currentTasks.push(task);
+      //   return currentTasks;
+      // });
+    } else {
+      task.key = Math.random().toString();
+      task.completed = false;
+      setTasks((currentTasks) => {
+        return [task, ...currentTasks];
+      });
+    }
+
     setModalOpen(false);
+    setEditMode(false);
   };
   const trackProgress = () => {
     const perc = Math.ceil((completedTasks.length / tasks.length) * 100);
