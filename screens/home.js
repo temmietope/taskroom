@@ -67,30 +67,13 @@ export default function Home({ navigation }) {
 
   const addTask = (task) => {
     // setItemToEdit({})'
-    console.log("takerrrr");
-    console.log(task);
+
     if (task.key) {
-      // const editIdx = tasks.findIndex((t) => t.key === task.key);
-      // // console.log("0000000000000000000000000");
-      // // console.log(tasks[editIdx]);
-
-      // // setTasks([...tasks, tasks[editIdx]]);
-
-      // const targetTask = tasks[editIdx]
-
       setTasks((currentTasks) => {
-        currentTasks.forEach((t) => {
-          if (t.key === task.key) {
-            t = { ...task };
-          }
-        });
+        const editIdx = currentTasks.findIndex((t) => t.key === task.key);
+        currentTasks[editIdx] = task;
+        return currentTasks;
       });
-
-      // setTasks((currentTasks) => {
-      //   currentTasks.splice(editIdx, 1);
-      //   currentTasks.push(task);
-      //   return currentTasks;
-      // });
     } else {
       task.key = Math.random().toString();
       task.completed = false;
@@ -144,7 +127,6 @@ export default function Home({ navigation }) {
     setModalOpen(true);
     setEditMode(true);
     setItemToEdit(item);
-    console.log(modalOpen);
   };
 
   return (

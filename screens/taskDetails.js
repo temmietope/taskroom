@@ -21,7 +21,7 @@ export default class TasksDetails extends Component {
 
   componentDidUpdate(prevProps) {
     console.log("i got to task details");
-
+   
     console.log(prevProps.navigation.getParam("item"));
     if (prevProps.navigation.getParam("item") !== this.state.item) {
       console.log("i got to task details");
