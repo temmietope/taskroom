@@ -11,7 +11,7 @@ import FlatButton from "../shared/button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 
-const AddTaskForm = ({ addTask }) => {
+const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
   const [formInput, setFormInput] = useState({
     title: "",
     body: "",
@@ -62,6 +62,8 @@ const AddTaskForm = ({ addTask }) => {
   };
 
   const handleSubmit = async () => {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    console.log(formInput)
     let err = await checkInput(formInput);
     if (err.title !== "" || err.body !== "" || err.date !== "") {
       return setFormError({
@@ -75,10 +77,12 @@ const AddTaskForm = ({ addTask }) => {
   };
   return (
     <View style={globalStyles.container}>
+      {console.log(itemToEdit)}
       <View style={styles.inputBar}>
         <TextInput
           style={globalStyles.input}
           placeholder="Task title"
+          value={formInput.title}
           // onChangeText={onChange}
           onChangeText={(text) => {
             setFormInput({ ...formInput, title: text });

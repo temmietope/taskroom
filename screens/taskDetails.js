@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import FlatButton from "../shared/button";
@@ -35,6 +35,7 @@ export default class TasksDetails extends Component {
   render() {
     const { item, buttonText } = this.state;
     const markAsComplete = this.props.navigation.getParam("markAsComplete");
+    const editPost = this.props.navigation.getParam("editPost");
 
     return (
       <View style={globalStyles.container}>
@@ -46,6 +47,12 @@ export default class TasksDetails extends Component {
               <Text style={styles.taskDescriptionTimeText}>{item.time}</Text>
             </Card>
           </View>
+
+          <TouchableOpacity onPress={() => editPost(item)}>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Edit task</Text>
+            </View>
+          </TouchableOpacity>
 
           <FlatButton
             text={buttonText}
@@ -89,6 +96,21 @@ const styles = StyleSheet.create({
   },
   taskDescriptionTimeText: {
     fontSize: 10,
-    textAlign:'right'
+    textAlign: "right",
+  },
+  button: {
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    width: 200,
+    backgroundColor: "#f2f2f2",
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 16,
+    textAlign: "center",
   },
 });

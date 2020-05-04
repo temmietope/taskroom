@@ -18,6 +18,9 @@ import { colors } from "../styles/color";
 
 export default function Home({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [itemToEdit, setItemToEdit] = useState({});
+
   const [tasks, setTasks] = useState([
     {
       title: "Cloth Delivery",
@@ -61,6 +64,7 @@ export default function Home({ navigation }) {
   useEffect(() => {
     trackProgress();
   }, [completedTasks, tasks, progress]);
+
   const addTask = (task) => {
     task.key = Math.random().toString();
     task.completed = false;
@@ -107,6 +111,13 @@ export default function Home({ navigation }) {
     }
   };
 
+  const editPost = (item) => {
+    setModalOpen(true);
+    setEditMode(true);
+    setItemToEdit(item);
+    console.log(modalOpen);
+  };
+
   return (
     <View style={{ ...globalStyles.container, ...styles.listContainer }}>
       <Modal visible={modalOpen} animationType="slide">
@@ -116,9 +127,17 @@ export default function Home({ navigation }) {
               name="close"
               size={24}
               style={{ ...styles.modalToggle, ...styles.modalClose }}
-              onPress={() => setModalOpen(false)}
+              onPress={() => {
+                setModalOpen(false);
+                setItemToEdit({});
+                setEditMode(false);
+              }}
             />
-            <AddTaskForm addTask={addTask} />
+            <AddTaskForm
+              addTask={addTask}
+              itemToEdit={itemToEdit}
+              editMode={editMode}
+            />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -143,6 +162,7 @@ export default function Home({ navigation }) {
               navigation.navigate("TaskDetails", {
                 item: item,
                 markAsComplete: markAsComplete,
+                editPost: editPost,
               })
             }
           >
