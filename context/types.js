@@ -1,0 +1,2 @@
+export const GET_ALL_TASKS = "GET_ALL_TASKS";
+export const GET_INDIVIDUAL_TASK = "GET_INDIVIDUAL_TASK";
