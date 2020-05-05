@@ -77,6 +77,8 @@ const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
         date: err.date,
       });
     } else {
+      //i just added this now cos i am working on context
+      setFormInput({...formInput, key: Math.random().toString(), completed: false})
       addTask(formInput);
     }
   };

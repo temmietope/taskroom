@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import TasksContext from "../context/tasks/tasksContext";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -17,116 +18,92 @@ import RangeSlider from "../shared/rangeSlider";
 import { colors } from "../styles/color";
 
 export default function Home({ navigation }) {
+  const tasksContext = useContext(TasksContext);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [itemToEdit, setItemToEdit] = useState({});
 
-  const [tasks, setTasks] = useState([
-    {
-      title: "Cloth Delivery",
-      body: "I have to deliver Bunmi's clothes to her on time",
-      time: "10: 00 am",
-      completed: false,
-      key: "1",
-    },
-    {
-      title: "Groceries Shopping",
-      body: "Go to the market and shop for important things",
-      time: "10: 00 am",
-      completed: false,
-      key: "2",
-    },
-    {
-      title: "Pick kids from school",
-      body: "My kids cant be late",
-      time: "10: 00 am",
-      completed: false,
-      key: "3",
-    },
-    {
-      title: "Fight",
-      body: "Ninja movement, nigga!",
-      time: "10: 00 am",
-      completed: false,
-      key: "4",
-    },
-    {
-      title: "Make dinner",
-      body: "Rice and beans with plantain",
-      time: "10: 00 am",
-      completed: false,
-      key: "5",
-    },
-  ]);
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [progress, setProgress] = useState(0);
+  const { all_tasks, progress, trackProgress, currentTask } = tasksContext;
+
+  // const [completedTasks, setCompletedTasks] = useState([]);
+  // const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     trackProgress();
-  }, [completedTasks, tasks, progress]);
+  }, [progress, all_tasks]);
+  // useEffect(() => {
+  //   trackProgress();
+  // }, [completedTasks, tasks, progress]);
 
-  const addTask = (task) => {
-    // setItemToEdit({})'
+  // const addTask = (task) => {
+  //   // setItemToEdit({})'
 
-    if (task.key) {
-      setTasks((currentTasks) => {
-        const editIdx = currentTasks.findIndex((t) => t.key === task.key);
-        currentTasks[editIdx] = task;
-        return currentTasks;
-      });
-    } else {
-      task.key = Math.random().toString();
-      task.completed = false;
-      setTasks((currentTasks) => {
-        return [task, ...currentTasks];
-      });
-    }
+  //   if (task.key) {
+  //     setTasks((currentTasks) => {
+  //       const editIdx = currentTasks.findIndex((t) => t.key === task.key);
+  //       currentTasks[editIdx] = task;
+  //       return currentTasks;
+  //     });
+  //   } else {
+  //     task.key = Math.random().toString();
+  //     task.completed = false;
+  //     setTasks((currentTasks) => {
+  //       return [task, ...currentTasks];
+  //     });
+  //   }
 
-    setModalOpen(false);
-    setEditMode(false);
-  };
-  const trackProgress = () => {
-    const perc = Math.ceil((completedTasks.length / tasks.length) * 100);
-    setProgress(perc);
-  };
-  const markAsComplete = async (key) => {
-    const idx = tasks.findIndex((task) => task.key === key);
-    const item = tasks[idx];
-    if (!item.completed) {
-      item.completed = true;
-      setTasks((currentTasks) => {
-        currentTasks.splice(idx, 1);
-        currentTasks.push(item);
-        return currentTasks;
-      });
-      setCompletedTasks((currentTasks) => {
-        currentTasks.unshift(item);
-        return currentTasks;
-      });
-      trackProgress();
-    } else if (item.completed) {
-      item.completed = false;
-      await setTasks((currentTasks) => {
-        currentTasks.splice(idx, 1);
-        currentTasks.unshift(item);
-        return currentTasks;
-      });
-      const markedIdx = completedTasks.findIndex(
-        (task) => task.key === item.key
-      );
+  //   setModalOpen(false);
+  //   setEditMode(false);
+  // };
+  // const trackProgress = () => {
+  //   const perc = Math.ceil((completedTasks.length / tasks.length) * 100);
+  //   setProgress(perc);
+  // };
+  // const markAsComplete = async (key) => {
+  //   const idx = tasks.findIndex((task) => task.key === key);
+  //   const item = tasks[idx];
+  //   if (!item.completed) {
+  //     item.completed = true;
+  //     setTasks((currentTasks) => {
+  //       currentTasks.splice(idx, 1);
+  //       currentTasks.push(item);
+  //       return currentTasks;
+  //     });
+  //     setCompletedTasks((currentTasks) => {
+  //       currentTasks.unshift(item);
+  //       return currentTasks;
+  //     });
+  //     trackProgress();
+  //   } else if (item.completed) {
+  //     item.completed = false;
+  //     await setTasks((currentTasks) => {
+  //       currentTasks.splice(idx, 1);
+  //       currentTasks.unshift(item);
+  //       return currentTasks;
+  //     });
+  //     const markedIdx = completedTasks.findIndex(
+  //       (task) => task.key === item.key
+  //     );
 
-      setCompletedTasks((currentTasks) => {
-        currentTasks.splice(markedIdx, 1);
-        return currentTasks;
-      });
-      trackProgress();
-    }
-  };
+  //     setCompletedTasks((currentTasks) => {
+  //       currentTasks.splice(markedIdx, 1);
+  //       return currentTasks;
+  //     });
+  //     trackProgress();
+  //   }
+  // };
+
+  // const editPost = (item) => {
+  //   setModalOpen(true);
+  //   setEditMode(true);
+  //   setItemToEdit(item);
+  // };
 
   const editPost = (item) => {
     setModalOpen(true);
     setEditMode(true);
-    setItemToEdit(item);
+    // setItemToEdit(item);
   };
 
   return (
@@ -140,12 +117,12 @@ export default function Home({ navigation }) {
               style={{ ...styles.modalToggle, ...styles.modalClose }}
               onPress={() => {
                 setModalOpen(false);
-                setItemToEdit({});
+                // setItemToEdit({});
                 setEditMode(false);
               }}
             />
             <AddTaskForm
-              addTask={addTask}
+              // addTask={addTask}
               itemToEdit={itemToEdit}
               editMode={editMode}
             />
@@ -166,13 +143,13 @@ export default function Home({ navigation }) {
       </View>
 
       <FlatList
-        data={tasks}
+        data={all_tasks}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("TaskDetails", {
-                item: item,
-                markAsComplete: markAsComplete,
+                key: item.key,
+                // markAsComplete: markAsComplete,
                 editPost: editPost,
               })
             }

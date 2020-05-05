@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import TasksContext from "../context/tasks/tasksContext";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import FlatButton from "../shared/button";
 
 const TasksDetails = (props) => {
-  const [item, setItem] = useState({});
+  const tasksContext = useContext(TasksContext);
+
+  const { getIndividualTask, currentTask, toggleComplete, editTask } = tasksContext;
+
+  // const [item, setItem] = useState({});
   const [buttonText, setButtonText] = useState("");
   useEffect(() => {
-    setItem(props.navigation.getParam("item"));
+    const taskKey = props.navigation.getParam("key");
+    getIndividualTask(taskKey);
+    // setItem(props.navigation.getParam("item"));
     renderButtonText(item);
     console.log("i rendered");
   }, [props]);
 
-  const markAsComplete = props.navigation.getParam("markAsComplete");
+  // const markAsComplete = props.navigation.getParam("markAsComplete");
   const editPost = props.navigation.getParam("editPost");
 
   const renderButtonText = (item) => {
@@ -22,18 +29,19 @@ const TasksDetails = (props) => {
       : setButtonText("Task Completed");
   };
 
+  const {title, body, time} =  currentTask
   return (
     <View style={globalStyles.container}>
       <View style={styles.detailsView}>
-        <Text style={styles.taskTitle}>{item.title}</Text>
+        <Text style={styles.taskTitle}>{title}</Text>
         <View style={styles.taskDescription}>
           <Card>
-            <Text style={styles.taskDescriptionText}>{item.body}</Text>
-            <Text style={styles.taskDescriptionTimeText}>{item.time}</Text>
+            <Text style={styles.taskDescriptionText}>{body}</Text>
+            <Text style={styles.taskDescriptionTimeText}>{time}</Text>
           </Card>
         </View>
 
-        <TouchableOpacity onPress={() => editPost(item)}>
+        <TouchableOpacity onPress={() => editPost()}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>Edit task</Text>
           </View>
