@@ -69,11 +69,7 @@ const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
   };
 
   const handleSubmit = async () => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    console.log(formInput);
-    console.log("+++++++++++++++++++++")
     let err = await checkInput(formInput);
-    console.log(err)
     if (err.title !== "" || err.body !== "" || err.date !== "") {
       return setFormError({
         title: err.title,
@@ -94,7 +90,6 @@ const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
           // onChangeText={onChange}
           onChangeText={(text) => {
             setFormInput({ ...formInput, title: text });
-            console.log(formInput.title)
           }}
         />
         <Text style={styles.err}>{formError.title}</Text>
