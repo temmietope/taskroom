@@ -12,10 +12,9 @@ import {
 export default (state, action) => {
   switch (action.type) {
     case GET_ALL_TASKS:
-      // console.log("i got to the reducer")
       return {
-        // ...state,
-        // all_tasks: [...state.pending_tasks, ...state.completed_tasks],
+        ...state,
+        all_tasks: action.payload,
         // loading: false,
       };
     case GET_INDIVIDUAL_TASK:

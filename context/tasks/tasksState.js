@@ -14,7 +14,7 @@ import {
 
 const TasksState = (props) => {
   useEffect(() => {
-    // getAllTasks();
+    getAllTasks();
   });
   const initialState = {
     pending_tasks: [
@@ -61,7 +61,7 @@ const TasksState = (props) => {
         key: "3",
       },
     ],
-    // all_tasks: [],
+    all_tasks: [],
     // all_tasks: [...pending_tasks, ...completed_tasks],
     progress: 0,
     current_task: null,
@@ -70,20 +70,12 @@ const TasksState = (props) => {
   const [state, dispatch] = useReducer(tasksReducer, initialState);
 
   const getAllTasks = () => {
-    // console.log("hello");
-    // const newArray = [...state.pending_tasks, ...state.completed_tasks];
-    // console.log(newArray);
-    // // dispatch({
-    // //   type: GET_ALL_TASKS,
-    // //   payload: newArray,
-    // // });
-    // // dispatch({
-    // //   type: GET_ALL_TASKS,
-    // // });
-    // // // const newArray = [...state.pending_tasks, ...state.completed_tasks]
-    // // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    // // console.log("i present to you all tasks");
-    // // console.log(state.all_tasks);
+    const newArray = [...state.pending_tasks, ...state.completed_tasks];
+    console.log(newArray);
+    dispatch({
+      type: GET_ALL_TASKS,
+      payload: newArray,
+    });
   };
 
   const getIndividualTask = (key) => {
@@ -92,6 +84,7 @@ const TasksState = (props) => {
       type: GET_INDIVIDUAL_TASK,
       payload: item,
     });
+    getAllTasks();
   };
 
   const addNewTask = (task) => {
@@ -99,6 +92,7 @@ const TasksState = (props) => {
       type: ADD_NEW_TASK,
       payload: task,
     });
+    getAllTasks();
   };
 
   const editTask = (task) => {
@@ -106,6 +100,7 @@ const TasksState = (props) => {
       type: EDIT_EXISTING_TASK,
       payload: task,
     });
+    getAllTasks();
   };
 
   const toggleComplete = (key) => {
@@ -125,6 +120,7 @@ const TasksState = (props) => {
         payload: item,
       });
       trackProgress();
+      getAllTasks();
     }
   };
 
@@ -136,12 +132,14 @@ const TasksState = (props) => {
       type: TRACK_PROGRESS,
       payload: perc,
     });
+    getAllTasks();
   };
 
   const clearTask = () => {
     dispatch({
       type: CLEAR_CURRENT_TASK,
     });
+    getAllTasks();
   };
 
   return (
