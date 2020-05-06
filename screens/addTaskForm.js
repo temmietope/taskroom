@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextInput,
   View,
@@ -6,18 +6,23 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import TasksContext from "../context/tasks/tasksContext";
 import { globalStyles } from "../styles/global";
 import FlatButton from "../shared/button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 
-const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
+const AddTaskForm = ({ editMode }) => {
+  const tasksContext = useContext(TasksContext);
+
+  const { addNewTask, editTask, currentTask } = tasksContext;
+
   const [formInput, setFormInput] = useState({
-    title: `${editMode ? itemToEdit.title : ""}`,
-    body: `${editMode ? itemToEdit.body : ""}`,
-    date: `${editMode ? itemToEdit.date : ""}`,
-    time: `${editMode ? itemToEdit.time : ""}`,
-    key: `${editMode ? itemToEdit.key : ""}`
+    title: `${editMode ? currentTask.title : ""}`,
+    body: `${editMode ? currentTask.body : ""}`,
+    date: `${editMode ? currentTask.date : ""}`,
+    time: `${editMode ? currentTask.time : ""}`,
+    key: `${editMode ? currentTask.key : ""}`,
   });
   // const [editFormInput, setEditForm] = useState({
   //   title: itemToEdit.title,
@@ -76,10 +81,16 @@ const AddTaskForm = ({ addTask, itemToEdit, editMode }) => {
         body: err.body,
         date: err.date,
       });
+      //i just added this now cos i am working on context
     } else {
       //i just added this now cos i am working on context
-      setFormInput({...formInput, key: Math.random().toString(), completed: false})
-      addTask(formInput);
+      setFormInput({
+        ...formInput,
+        key: Math.random().toString(),
+        completed: false,
+      });
+      editMode ? editTask(formInput) : addNewTask(formInput);
+      // addTask(formInput);
     }
   };
   return (

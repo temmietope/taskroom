@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Navigator from "./routes/drawer";
-import TaskState from "./context/tasks";
+import TaskState from "./context/tasks/tasksState";
+import TasksContext from "./context/tasks/tasksContext";
 
 const getFonts = () =>
   Font.loadAsync({

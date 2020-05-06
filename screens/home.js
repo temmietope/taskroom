@@ -22,15 +22,23 @@ export default function Home({ navigation }) {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [itemToEdit, setItemToEdit] = useState({});
+  // const [itemToEdit, setItemToEdit] = useState({});
 
-  const { all_tasks, progress, trackProgress, currentTask } = tasksContext;
+  const {
+    all_tasks,
+    progress,
+    trackProgress,
+    currentTask,
+    clearTask,
+    getAllTasks
+  } = tasksContext;
 
   // const [completedTasks, setCompletedTasks] = useState([]);
   // const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     trackProgress();
+    // getAllTasks()
   }, [progress, all_tasks]);
   // useEffect(() => {
   //   trackProgress();
@@ -100,7 +108,7 @@ export default function Home({ navigation }) {
   //   setItemToEdit(item);
   // };
 
-  const editPost = (item) => {
+  const editPost = () => {
     setModalOpen(true);
     setEditMode(true);
     // setItemToEdit(item);
@@ -119,11 +127,12 @@ export default function Home({ navigation }) {
                 setModalOpen(false);
                 // setItemToEdit({});
                 setEditMode(false);
+                clearTask();
               }}
             />
             <AddTaskForm
               // addTask={addTask}
-              itemToEdit={itemToEdit}
+              // itemToEdit={itemToEdit}
               editMode={editMode}
             />
           </View>

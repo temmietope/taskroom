@@ -11,27 +11,24 @@ import {
 
 export default (state, action) => {
   switch (action.type) {
-    // case GET_ALL_TASKS:
-    //   return {
-    //     ...state,
-    //     tasks: payload,
-    //     loading: false,
-    //   };
-    // case GET_INDIVIDUAL_TASK:
-    //   return {
-    //     ...state,
-    //     task: payload,
-    //     loading: false,
-    //   };
-    case ADD_NEW_TASK:
+    case GET_ALL_TASKS:
+      // console.log("i got to the reducer")
       return {
-        ...state,
-        pending_tasks: [task, ...state.pending_tasks],
+        // ...state,
+        // all_tasks: [...state.pending_tasks, ...state.completed_tasks],
+        // loading: false,
       };
     case GET_INDIVIDUAL_TASK:
       return {
         ...state,
-        currentTask: payload,
+        current_task: action.payload,
+        loading: false,
+      };
+    case ADD_NEW_TASK:
+      return {
+        ...state,
+        pending_tasks: [action.payload, ...state.pending_tasks],
+        loading: false,
       };
     case EDIT_EXISTING_TASK:
       return {
@@ -39,32 +36,37 @@ export default (state, action) => {
         all_tasks: state.all_tasks.map((task) =>
           task.key === action.payload.key ? action.payload : task
         ),
+        loading: false,
       };
     case MARK_COMPLETE:
       return {
         ...state,
         pending_tasks: state.pending_tasks.filter((task) => {
-          task.key !== payload.key;
+          task.key !== action.payload.key;
         }),
-        completed_tasks: [...state.completed_tasks, payload],
+        completed_tasks: [...state.completed_tasks, action.payload],
+        loading: false,
       };
     case MARK_INCOMPLETE:
       return {
         ...state,
         completed_tasks: state.completed_tasks.filter((task) => {
-          task.key !== payload.key;
+          task.key !== action.payload.key;
         }),
-        pending_tasks: [payload, ...state.pending_tasks],
+        pending_tasks: [action.payload, ...state.pending_tasks],
+        loading: false,
       };
     case TRACK_PROGRESS:
       return {
         ...state,
-        progress: payload,
+        progress: action.payload,
+        loading: false,
       };
     case CLEAR_CURRENT_TASK:
       return {
         ...state,
-        currentTask: null,
+        current_task: null,
+        loading: false,
       };
   }
 };

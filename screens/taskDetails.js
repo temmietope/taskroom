@@ -8,7 +8,12 @@ import FlatButton from "../shared/button";
 const TasksDetails = (props) => {
   const tasksContext = useContext(TasksContext);
 
-  const { getIndividualTask, currentTask, toggleComplete, editTask } = tasksContext;
+  const {
+    getIndividualTask,
+    current_task,
+    toggleComplete,
+    editTask,
+  } = tasksContext;
 
   // const [item, setItem] = useState({});
   const [buttonText, setButtonText] = useState("");
@@ -18,18 +23,18 @@ const TasksDetails = (props) => {
     // setItem(props.navigation.getParam("item"));
     renderButtonText(item);
     console.log("i rendered");
-  }, [props]);
+  }, [props, current_task]);
 
   // const markAsComplete = props.navigation.getParam("markAsComplete");
   const editPost = props.navigation.getParam("editPost");
 
-  const renderButtonText = (item) => {
-    item.completed
+  const renderButtonText = (completed) => {
+    completed
       ? setButtonText("Mark Incomplete")
       : setButtonText("Task Completed");
   };
 
-  const {title, body, time} =  currentTask
+  const { title, body, time, key, completed } = current_task;
   return (
     <View style={globalStyles.container}>
       <View style={styles.detailsView}>
@@ -50,8 +55,9 @@ const TasksDetails = (props) => {
         <FlatButton
           text={buttonText}
           onPress={() => {
-            markAsComplete(`${item.key}`);
-            item && renderButtonText(item);
+            toggleComplete(key)
+            // markAsComplete(`${item.key}`);
+            current_task && renderButtonText(completed);
           }}
         />
       </View>

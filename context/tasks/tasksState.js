@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import TasksContext from "./tasksContext";
 import tasksReducer from "./tasksReducer";
 import {
@@ -13,8 +13,10 @@ import {
 } from "../types";
 
 const TasksState = (props) => {
+  useEffect(() => {
+    // getAllTasks();
+  });
   const initialState = {
-    // loading: true,
     pending_tasks: [
       {
         title: "Cloth Delivery",
@@ -31,14 +33,6 @@ const TasksState = (props) => {
         date: "2020-03-09",
         completed: false,
         key: "2",
-      },
-      {
-        title: "Pick kids from school",
-        body: "My kids cant be late",
-        time: "10: 00 am",
-        date: "2020-01-24",
-        completed: false,
-        key: "3",
       },
       {
         title: "Fight",
@@ -59,27 +53,38 @@ const TasksState = (props) => {
     ],
     completed_tasks: [
       {
-        title: "Pick kids from school",
+        title: "Pick kids",
         body: "My kids cant be late",
         time: "10: 00 am",
         date: "2020-01-24",
-        completed: false,
+        completed: true,
         key: "3",
       },
     ],
-    all_tasks: [...pending_tasks, ...completed_tasks],
+    // all_tasks: [],
+    // all_tasks: [...pending_tasks, ...completed_tasks],
     progress: 0,
-    currentTask: null,
+    current_task: null,
   };
 
   const [state, dispatch] = useReducer(tasksReducer, initialState);
 
-  // const getAllTasks = () => {
-  //   dispatch({
-  //     type: GET_ALL_TASKS,
-  //     payload: allTasks,
-  //   });
-  // };
+  const getAllTasks = () => {
+    // console.log("hello");
+    // const newArray = [...state.pending_tasks, ...state.completed_tasks];
+    // console.log(newArray);
+    // // dispatch({
+    // //   type: GET_ALL_TASKS,
+    // //   payload: newArray,
+    // // });
+    // // dispatch({
+    // //   type: GET_ALL_TASKS,
+    // // });
+    // // // const newArray = [...state.pending_tasks, ...state.completed_tasks]
+    // // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    // // console.log("i present to you all tasks");
+    // // console.log(state.all_tasks);
+  };
 
   const getIndividualTask = (key) => {
     const item = all_tasks.find((task) => task.key === key);
@@ -124,7 +129,9 @@ const TasksState = (props) => {
   };
 
   const trackProgress = () => {
-    const perc = Math.ceil((completed_tasks.length / all_tasks.length) * 100);
+    const perc = Math.ceil(
+      (state.completed_tasks.length / state.all_tasks.length) * 100
+    );
     dispatch({
       type: TRACK_PROGRESS,
       payload: perc,
@@ -140,8 +147,12 @@ const TasksState = (props) => {
   return (
     <TasksContext.Provider
       value={{
+        all_tasks: state.all_tasks,
+        pending_tasks: state.pending_tasks,
+        completed_tasks: state.completed_tasks,
+        current_task: state.current_task,
+        progress: state.progress,
         loading: state.loading,
-        tasks: state.tasks,
         error: state.error,
         getAllTasks,
         getIndividualTask,
@@ -157,3 +168,5 @@ const TasksState = (props) => {
     </TasksContext.Provider>
   );
 };
+
+export default TasksState;
