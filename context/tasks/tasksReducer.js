@@ -12,9 +12,10 @@ import {
 export default (state, action) => {
   switch (action.type) {
     case GET_ALL_TASKS:
+      console.log("get in here");
       return {
         ...state,
-        all_tasks: action.payload,
+        // all_tasks: action.payload,
         // loading: false,
       };
     case GET_INDIVIDUAL_TASK:
@@ -67,5 +68,7 @@ export default (state, action) => {
         current_task: null,
         loading: false,
       };
+    default:
+      return state;
   }
 };

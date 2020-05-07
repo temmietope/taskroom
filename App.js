@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Navigator from "./routes/drawer";
-import TaskState from "./context/tasks/tasksState";
-import TasksContext from "./context/tasks/tasksContext";
+import TasksState from "./context/tasks/tasksState";
 
 const getFonts = () =>
   Font.loadAsync({
@@ -16,9 +15,9 @@ export default function App() {
 
   if (fontsLoaded) {
     return (
-      <TaskState>
+      <TasksState>
         <Navigator />
-      </TaskState>
+      </TasksState>
     );
   } else {
     return (
