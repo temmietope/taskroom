@@ -22,22 +22,27 @@ const TasksDetails = (props) => {
   // const [item, setItem] = useState({});
   const [buttonText, setButtonText] = useState("");
   useEffect(() => {
-    console.log("current task")
+    console.log("current task>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     console.log(current_task)
     const taskKey = props.navigation.getParam("key");
-    // getIndividualTask(taskKey);
+    getIndividualTask(taskKey);
     // setItem(props.navigation.getParam("item"));
     renderButtonText(current_task.completed);
     console.log("i rendered");
-  }, [props, current_task]);
+  }, [current_task.completed]);
 
   // // const markAsComplete = props.navigation.getParam("markAsComplete");
   // const editPost = props.navigation.getParam("editPost");
 
   const renderButtonText = (completed) => {
-    completed
-      ? setButtonText("Mark Incomplete")
-      : setButtonText("Task Completed");
+    if(completed){
+      setButtonText("Mark Incomplete")
+    }else{
+      setButtonText("Task Completed")
+    }
+    // completed
+    //   ? setButtonText("Mark Incomplete")
+    //   : setButtonText("Task Completed");
   };
 
   const { title, body, time, key, completed } = current_task;

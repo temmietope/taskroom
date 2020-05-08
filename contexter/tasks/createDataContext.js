@@ -44,7 +44,9 @@ export default (reducer, initialValue) => {
 
     const getIndividualTask = (key) => {
       try {
-        console.log("get INDIVIDUAL TASK>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        console.log(
+          "get INDIVIDUAL TASK>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+        );
         const item = state.all_tasks.find((task) => task.key === key);
         dispatch({
           type: GET_INDIVIDUAL_TASK,
@@ -73,16 +75,22 @@ export default (reducer, initialValue) => {
     };
 
     const toggleComplete = (key) => {
+      console.log(key);
       const idx = state.all_tasks.findIndex((task) => task.key === key);
       const item = state.all_tasks[idx];
-      item.completed = !item.completed;
       if (item.completed) {
+        item.completed = false;
+        console.log(state.current_task)
         dispatch({
           type: MARK_INCOMPLETE,
           payload: item,
         });
         trackProgress();
+        getAllTasks()
       } else {
+        item.completed = true;
+        console.log(state.current_task)
+
         dispatch({
           type: MARK_COMPLETE,
           payload: item,

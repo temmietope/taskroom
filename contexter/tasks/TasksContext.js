@@ -13,6 +13,7 @@ import {
 const tasksReducer = (state, action) => {
   switch (action.type) {
     case GET_ALL_TASKS:
+      console.log("getAllTasks");
       return {
         ...state,
         all_tasks: action.payload,
@@ -41,21 +42,22 @@ const tasksReducer = (state, action) => {
         loading: false,
       };
     case MARK_COMPLETE:
-      console.log("mark item complete")
+      console.log("mark item complete");
+      // console.log(state)
       return {
         ...state,
         pending_tasks: state.pending_tasks.filter((task) => {
-          task.key !== action.payload.key;
+          return task.key !== action.payload.key;
         }),
         completed_tasks: [...state.completed_tasks, action.payload],
         loading: false,
       };
     case MARK_INCOMPLETE:
-      console.log("mark item incomplete")
+      console.log("mark item incomplete");
       return {
         ...state,
         completed_tasks: state.completed_tasks.filter((task) => {
-          task.key !== action.payload.key;
+          return task.key !== action.payload.key;
         }),
         pending_tasks: [action.payload, ...state.pending_tasks],
         loading: false,
@@ -125,7 +127,7 @@ const initialState = {
   all_tasks: [],
   progress: 0,
   current_task: null,
-  loading: true
+  loading: true,
 };
 
 // const actions = {
