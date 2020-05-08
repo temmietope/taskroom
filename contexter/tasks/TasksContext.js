@@ -42,8 +42,6 @@ const tasksReducer = (state, action) => {
         loading: false,
       };
     case MARK_COMPLETE:
-      console.log("mark item complete");
-      // console.log(state)
       return {
         ...state,
         pending_tasks: state.pending_tasks.filter((task) => {
@@ -53,7 +51,6 @@ const tasksReducer = (state, action) => {
         loading: false,
       };
     case MARK_INCOMPLETE:
-      console.log("mark item incomplete");
       return {
         ...state,
         completed_tasks: state.completed_tasks.filter((task) => {

@@ -33,7 +33,7 @@ export default function Home({ navigation }) {
     pending_tasks,
     completed_tasks,
     progress,
-    // trackProgress,
+    trackProgress,
     currentTask,
     clearTask,
     getAllTasks,
@@ -45,7 +45,7 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     // console.log("this is the home")
-    // trackProgress();
+    trackProgress();
     // getAllTasks()
     // console.log(all_tasks)
     // console.log(getAllTasks)

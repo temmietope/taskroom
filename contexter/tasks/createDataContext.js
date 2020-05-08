@@ -86,7 +86,6 @@ export default (reducer, initialValue) => {
           payload: item,
         });
         trackProgress();
-        getAllTasks()
       } else {
         item.completed = true;
         console.log(state.current_task)
@@ -96,18 +95,17 @@ export default (reducer, initialValue) => {
           payload: item,
         });
         trackProgress();
-        getAllTasks();
       }
     };
 
     const trackProgress = () => {
-      // const perc = Math.ceil(
-      //   (state.completed_tasks.length / state.all_tasks.length) * 100
-      // );
-      // dispatch({
-      //   type: TRACK_PROGRESS,
-      //   payload: perc,
-      // });
+      const perc = Math.ceil(
+        (state.completed_tasks.length / state.all_tasks.length) * 100
+      );
+      dispatch({
+        type: TRACK_PROGRESS,
+        payload: perc,
+      });
       // getAllTasks();
     };
 
