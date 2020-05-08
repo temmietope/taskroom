@@ -16,6 +16,8 @@ export default (reducer, initialValue) => {
   const Provider = (props) => {
     useEffect(() => {
       getAllTasks();
+      // getIndividualTask()
+      trackProgress();
       // console.log(state.all_tasks);
       console.log("useeffect of createdatacontext");
     }, [state]);
@@ -29,29 +31,29 @@ export default (reducer, initialValue) => {
     // }
 
     const getAllTasks = async () => {
-      // try {
-      // const initialContext = [{ ...initialState }, () => {}];
-      const newArray = [...state.pending_tasks, ...state.completed_tasks];
-      // console.log("get All Home")
-      // console.log(newArray);
-      console.log("get all tasks")
-      dispatch({
-        type: GET_ALL_TASKS,
-        payload: newArray,
-      });
-      // }
-      // catch (err) {
-      //   console.log(err);
-      // }
+      try {
+        const newArray = [...state.pending_tasks, ...state.completed_tasks];
+        dispatch({
+          type: GET_ALL_TASKS,
+          payload: newArray,
+        });
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     const getIndividualTask = (key) => {
-      // const item = all_tasks.find((task) => task.key === key);
-      // dispatch({
-      //   type: GET_INDIVIDUAL_TASK,
-      //   payload: item,
-      // });
-      // getAllTasks();
+      try {
+        console.log("get INDIVIDUAL TASK>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        const item = state.all_tasks.find((task) => task.key === key);
+        dispatch({
+          type: GET_INDIVIDUAL_TASK,
+          payload: item,
+        });
+        getAllTasks();
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     const addNewTask = (task) => {
@@ -71,23 +73,23 @@ export default (reducer, initialValue) => {
     };
 
     const toggleComplete = (key) => {
-      // const idx = all_tasks.findIndex((task) => task.key === key);
-      // const item = all_tasks[idx];
-      // item.completed = !item.completed;
-      // if (item.completed) {
-      //   dispatch({
-      //     type: MARK_INCOMPLETE,
-      //     payload: item,
-      //   });
-      //   trackProgress();
-      // } else {
-      //   dispatch({
-      //     type: MARK_COMPLETE,
-      //     payload: item,
-      //   });
-      //   trackProgress();
-      //   getAllTasks();
-      // }
+      const idx = state.all_tasks.findIndex((task) => task.key === key);
+      const item = state.all_tasks[idx];
+      item.completed = !item.completed;
+      if (item.completed) {
+        dispatch({
+          type: MARK_INCOMPLETE,
+          payload: item,
+        });
+        trackProgress();
+      } else {
+        dispatch({
+          type: MARK_COMPLETE,
+          payload: item,
+        });
+        trackProgress();
+        getAllTasks();
+      }
     };
 
     const trackProgress = () => {
@@ -118,6 +120,7 @@ export default (reducer, initialValue) => {
           progress: state.progress,
           loading: state.loading,
           error: state.error,
+          loading: state.loading,
           getAllTasks,
           getIndividualTask,
           addNewTask,

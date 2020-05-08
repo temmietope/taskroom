@@ -32,22 +32,23 @@ export default function Home({ navigation }) {
     all_tasks,
     pending_tasks,
     completed_tasks,
-    // progress,
+    progress,
     // trackProgress,
-    // currentTask,
-    // clearTask,
-    getAllTasks
+    currentTask,
+    clearTask,
+    getAllTasks,
+    getIndividualTask,
   } = tasksContext;
 
   // const [completedTasks, setCompletedTasks] = useState([]);
   // const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    console.log("this is the home")
+    // console.log("this is the home")
     // trackProgress();
     // getAllTasks()
-    console.log(all_tasks)
-    console.log(getAllTasks)
+    // console.log(all_tasks)
+    // console.log(getAllTasks)
     // getAllTasks()
   }, [all_tasks]);
   // useEffect(() => {
@@ -126,7 +127,7 @@ export default function Home({ navigation }) {
 
   return (
     <View style={{ ...globalStyles.container, ...styles.listContainer }}>
-      {/* <Modal visible={modalOpen} animationType="slide">
+      <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.modalContent}>
             <MaterialIcons
@@ -165,13 +166,14 @@ export default function Home({ navigation }) {
         data={all_tasks}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() =>
+            onPress={() => {
+              getIndividualTask(item.key);
               navigation.navigate("TaskDetails", {
                 key: item.key,
                 // markAsComplete: markAsComplete,
                 editPost: editPost,
-              })
-            }
+              });
+            }}
           >
             <Card completed={item.completed}>
               <Text style={globalStyles.titleText}>{item.title}</Text>
@@ -179,7 +181,7 @@ export default function Home({ navigation }) {
             </Card>
           </TouchableOpacity>
         )}
-      /> */}
+      />
     </View>
   );
 }
