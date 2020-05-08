@@ -1,116 +1,121 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import TasksContext from "../context/tasks/tasksContext";
+import {TasksContext} from "../context/tasks/tasksState";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import FlatButton from "../shared/button";
 
 const TasksDetails = (props) => {
-  const tasksContext = useContext(TasksContext);
+//   const tasksContext = useContext(TasksContext);
 
-  const {
-    getIndividualTask,
-    current_task,
-    toggleComplete,
-    editTask,
-  } = tasksContext;
+//   const {
+//     getIndividualTask,
+//     current_task,
+//     toggleComplete,
+//     editTask,
+//   } = tasksContext;
 
-  // const [item, setItem] = useState({});
-  const [buttonText, setButtonText] = useState("");
-  useEffect(() => {
-    const taskKey = props.navigation.getParam("key");
-    getIndividualTask(taskKey);
-    // setItem(props.navigation.getParam("item"));
-    renderButtonText(item);
-    console.log("i rendered");
-  }, [props, current_task]);
+//   // const [item, setItem] = useState({});
+//   const [buttonText, setButtonText] = useState("");
+//   useEffect(() => {
+//     const taskKey = props.navigation.getParam("key");
+//     getIndividualTask(taskKey);
+//     // setItem(props.navigation.getParam("item"));
+//     renderButtonText(item);
+//     console.log("i rendered");
+//   }, [props, current_task]);
 
-  // const markAsComplete = props.navigation.getParam("markAsComplete");
-  const editPost = props.navigation.getParam("editPost");
+//   // const markAsComplete = props.navigation.getParam("markAsComplete");
+//   const editPost = props.navigation.getParam("editPost");
 
-  const renderButtonText = (completed) => {
-    completed
-      ? setButtonText("Mark Incomplete")
-      : setButtonText("Task Completed");
-  };
+//   const renderButtonText = (completed) => {
+//     completed
+//       ? setButtonText("Mark Incomplete")
+//       : setButtonText("Task Completed");
+//   };
 
-  const { title, body, time, key, completed } = current_task;
-  return (
-    <View style={globalStyles.container}>
-      <View style={styles.detailsView}>
-        <Text style={styles.taskTitle}>{title}</Text>
-        <View style={styles.taskDescription}>
-          <Card>
-            <Text style={styles.taskDescriptionText}>{body}</Text>
-            <Text style={styles.taskDescriptionTimeText}>{time}</Text>
-          </Card>
-        </View>
+//   const { title, body, time, key, completed } = current_task;
+//   return (
+//     <View style={globalStyles.container}>
+//       <View style={styles.detailsView}>
+//         <Text style={styles.taskTitle}>{title}</Text>
+//         <View style={styles.taskDescription}>
+//           <Card>
+//             <Text style={styles.taskDescriptionText}>{body}</Text>
+//             <Text style={styles.taskDescriptionTimeText}>{time}</Text>
+//           </Card>
+//         </View>
 
-        <TouchableOpacity onPress={() => editPost()}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Edit task</Text>
-          </View>
-        </TouchableOpacity>
+//         <TouchableOpacity onPress={() => editPost()}>
+//           <View style={styles.button}>
+//             <Text style={styles.buttonText}>Edit task</Text>
+//           </View>
+//         </TouchableOpacity>
 
-        <FlatButton
-          text={buttonText}
-          onPress={() => {
-            toggleComplete(key)
-            // markAsComplete(`${item.key}`);
-            current_task && renderButtonText(completed);
-          }}
-        />
-      </View>
-    </View>
-  );
+//         <FlatButton
+//           text={buttonText}
+//           onPress={() => {
+//             toggleComplete(key)
+//             // markAsComplete(`${item.key}`);
+//             current_task && renderButtonText(completed);
+//           }}
+//         />
+//       </View>
+//     </View>
+//   );
+return(
+  <View>
+    
+  </View>
+)
 };
-const styles = StyleSheet.create({
-  detailsView: {
-    borderRadius: 6,
-    elevation: 2,
-    backgroundColor: "#fff",
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "#333",
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    marginHorizontal: 4,
-    borderColor: "gray",
-    padding: 10,
-    height: "100%",
-  },
-  taskTitle: {
-    fontSize: 25,
-    textAlign: "center",
-    width: "100%",
-    padding: 10,
-    fontWeight: "bold",
-  },
-  taskDescription: {
-    marginBottom: 10,
-  },
-  taskDescriptionText: {
-    fontSize: 16,
-  },
-  taskDescriptionTimeText: {
-    fontSize: 10,
-    textAlign: "right",
-  },
-  button: {
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    width: 200,
-    backgroundColor: "#f2f2f2",
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    fontSize: 16,
-    textAlign: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   detailsView: {
+//     borderRadius: 6,
+//     elevation: 2,
+//     backgroundColor: "#fff",
+//     shadowOffset: { width: 1, height: 1 },
+//     shadowColor: "#333",
+//     shadowOpacity: 0.3,
+//     shadowRadius: 2,
+//     marginHorizontal: 4,
+//     borderColor: "gray",
+//     padding: 10,
+//     height: "100%",
+//   },
+//   taskTitle: {
+//     fontSize: 25,
+//     textAlign: "center",
+//     width: "100%",
+//     padding: 10,
+//     fontWeight: "bold",
+//   },
+//   taskDescription: {
+//     marginBottom: 10,
+//   },
+//   taskDescriptionText: {
+//     fontSize: 16,
+//   },
+//   taskDescriptionTimeText: {
+//     fontSize: 10,
+//     textAlign: "right",
+//   },
+//   button: {
+//     borderRadius: 8,
+//     paddingVertical: 8,
+//     paddingHorizontal: 10,
+//     width: 200,
+//     backgroundColor: "#f2f2f2",
+//     marginBottom: 20,
+//   },
+//   buttonText: {
+//     color: "white",
+//     fontWeight: "bold",
+//     textTransform: "uppercase",
+//     fontSize: 16,
+//     textAlign: "center",
+//   },
+// });
 export default TasksDetails;
 
 // export default class TasksDetails extends Component {

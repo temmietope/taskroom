@@ -9,7 +9,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import {TasksContext} from "../context/tasks/tasksState";
+import { Context as TasksState } from "../contexter/tasks/TasksContext";
+
+// import {TasksContext} from "../context/tasks/tasksState";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -18,7 +20,9 @@ import RangeSlider from "../shared/rangeSlider";
 import { colors } from "../styles/color";
 
 export default function Home({ navigation }) {
-  const tasksContext = useContext(TasksContext);
+  // const tasksContext = useContext(TasksContext);
+
+  const tasksContext = useContext(TasksState);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -26,10 +30,12 @@ export default function Home({ navigation }) {
 
   const {
     all_tasks,
-    progress,
-    trackProgress,
-    currentTask,
-    clearTask,
+    pending_tasks,
+    completed_tasks,
+    // progress,
+    // trackProgress,
+    // currentTask,
+    // clearTask,
     getAllTasks
   } = tasksContext;
 
@@ -37,9 +43,13 @@ export default function Home({ navigation }) {
   // const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    trackProgress();
+    console.log("this is the home")
+    // trackProgress();
     // getAllTasks()
-  }, [progress, all_tasks]);
+    console.log(all_tasks)
+    console.log(getAllTasks)
+    // getAllTasks()
+  }, [all_tasks]);
   // useEffect(() => {
   //   trackProgress();
   // }, [completedTasks, tasks, progress]);
@@ -116,7 +126,7 @@ export default function Home({ navigation }) {
 
   return (
     <View style={{ ...globalStyles.container, ...styles.listContainer }}>
-      <Modal visible={modalOpen} animationType="slide">
+      {/* <Modal visible={modalOpen} animationType="slide">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.modalContent}>
             <MaterialIcons
@@ -169,7 +179,7 @@ export default function Home({ navigation }) {
             </Card>
           </TouchableOpacity>
         )}
-      />
+      /> */}
     </View>
   );
 }
