@@ -44,13 +44,13 @@ export default function Home({ navigation }) {
   // const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // console.log("this is the home")
+    console.log("this is the home")
     trackProgress();
     // getAllTasks()
     // console.log(all_tasks)
     // console.log(getAllTasks)
-    // getAllTasks()
-  }, [all_tasks]);
+    getAllTasks()
+  }, []);
   // useEffect(() => {
   //   trackProgress();
   // }, [completedTasks, tasks, progress]);

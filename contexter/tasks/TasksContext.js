@@ -28,6 +28,7 @@ const tasksReducer = (state, action) => {
         loading: false,
       };
     case ADD_NEW_TASK:
+      console.log("add new task")
       return {
         ...state,
         pending_tasks: [action.payload, ...state.pending_tasks],

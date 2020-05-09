@@ -99,6 +99,7 @@ export default (reducer, initialValue) => {
     };
 
     const trackProgress = () => {
+      console.log(state.all_tasks)
       const perc = Math.ceil(
         (state.completed_tasks.length / state.all_tasks.length) * 100
       );
