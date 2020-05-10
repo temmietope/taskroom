@@ -35,6 +35,7 @@ export default function Home({ navigation }) {
     progress,
     trackProgress,
     currentTask,
+    loading,
     clearTask,
     getAllTasks,
     getIndividualTask,
@@ -44,13 +45,14 @@ export default function Home({ navigation }) {
   // const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    console.log(loading)
     console.log("this is the home")
     trackProgress();
     // getAllTasks()
     // console.log(all_tasks)
     // console.log(getAllTasks)
     getAllTasks()
-  }, []);
+  }, [loading]);
   // useEffect(() => {
   //   trackProgress();
   // }, [completedTasks, tasks, progress]);
