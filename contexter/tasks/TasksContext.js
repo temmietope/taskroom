@@ -20,7 +20,7 @@ const tasksReducer = (state, action) => {
         loading: false,
       };
     case GET_INDIVIDUAL_TASK:
-      console.log("no longer");
+      // console.log("no longer");
 
       return {
         ...state,

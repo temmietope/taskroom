@@ -22,8 +22,8 @@ const TasksDetails = (props) => {
   // const [item, setItem] = useState({});
   const [buttonText, setButtonText] = useState("");
   useEffect(() => {
-    console.log("current task>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    console.log(current_task)
+    // console.log("current task>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    // console.log(current_task)
     const taskKey = props.navigation.getParam("key");
     getIndividualTask(taskKey);
     // setItem(props.navigation.getParam("item"));

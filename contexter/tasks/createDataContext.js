@@ -44,9 +44,9 @@ export default (reducer, initialValue) => {
 
     const getIndividualTask = (key) => {
       try {
-        console.log(
-          "get INDIVIDUAL TASK>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-        );
+        // console.log(
+        //   "get INDIVIDUAL TASK>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+        // );
         const item = state.all_tasks.find((task) => task.key === key);
         dispatch({
           type: GET_INDIVIDUAL_TASK,
@@ -75,12 +75,12 @@ export default (reducer, initialValue) => {
     };
 
     const toggleComplete = (key) => {
-      console.log(key);
+      // console.log(key);
       const idx = state.all_tasks.findIndex((task) => task.key === key);
       const item = state.all_tasks[idx];
       if (item.completed) {
         item.completed = false;
-        console.log(state.current_task)
+        // console.log(state.current_task)
         dispatch({
           type: MARK_INCOMPLETE,
           payload: item,
@@ -88,7 +88,7 @@ export default (reducer, initialValue) => {
         trackProgress();
       } else {
         item.completed = true;
-        console.log(state.current_task)
+        // console.log(state.current_task)
 
         dispatch({
           type: MARK_COMPLETE,
@@ -99,7 +99,7 @@ export default (reducer, initialValue) => {
     };
 
     const trackProgress = () => {
-      console.log(state.all_tasks)
+      // console.log(state.all_tasks)
       const perc = Math.ceil(
         (state.completed_tasks.length / state.all_tasks.length) * 100
       );

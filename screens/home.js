@@ -47,12 +47,13 @@ export default function Home({ navigation }) {
   useEffect(() => {
     console.log(loading)
     console.log("this is the home")
+    console.log(progress)
     trackProgress();
     // getAllTasks()
     // console.log(all_tasks)
     // console.log(getAllTasks)
     getAllTasks()
-  }, [loading]);
+  }, [loading, progress, currentTask]);
   // useEffect(() => {
   //   trackProgress();
   // }, [completedTasks, tasks, progress]);
