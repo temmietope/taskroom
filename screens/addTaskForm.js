@@ -26,7 +26,8 @@ const AddTaskForm = ({ editMode }) => {
     body: `${editMode ? currentTask.body : ""}`,
     date: `${editMode ? currentTask.date : ""}`,
     time: `${editMode ? currentTask.time : ""}`,
-    key: `${editMode ? currentTask.key : ""}`,
+    key: `${editMode ? currentTask.key : Math.random().toString()}`,
+    completed: editMode ? currentTask.completed : false
   });
   // const [editFormInput, setEditForm] = useState({
   //   title: itemToEdit.title,
