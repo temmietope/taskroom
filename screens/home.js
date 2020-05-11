@@ -53,7 +53,7 @@ export default function Home({ navigation }) {
     // console.log(all_tasks)
     // console.log(getAllTasks)
     getAllTasks()
-  }, [loading, progress, currentTask]);
+  }, [loading, progress, currentTask, completed_tasks, pending_tasks]);
   // useEffect(() => {
   //   trackProgress();
   // }, [completedTasks, tasks, progress]);
