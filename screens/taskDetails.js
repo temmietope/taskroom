@@ -32,13 +32,14 @@ const TasksDetails = (props) => {
   }, [current_task.completed]);
 
   // // const markAsComplete = props.navigation.getParam("markAsComplete");
-  // const editPost = props.navigation.getParam("editPost");
+  const editPost = props.navigation.getParam("editPost");
+  const closeModal = props.navigation.getParam("closeModal");
 
   const renderButtonText = (completed) => {
-    if(completed){
-      setButtonText("Mark Incomplete")
-    }else{
-      setButtonText("Task Completed")
+    if (completed) {
+      setButtonText("Mark Incomplete");
+    } else {
+      setButtonText("Task Completed");
     }
     // completed
     //   ? setButtonText("Mark Incomplete")
@@ -57,7 +58,12 @@ const TasksDetails = (props) => {
           </Card>
         </View>
 
-        <TouchableOpacity onPress={() => editPost()}>
+        <TouchableOpacity
+          onPress={async () => {
+            await editPost();
+            editTask(current_task);
+          }}
+        >
           <View style={styles.button}>
             <Text style={styles.buttonText}>Edit task</Text>
           </View>
@@ -66,7 +72,7 @@ const TasksDetails = (props) => {
         <FlatButton
           text={buttonText}
           onPress={() => {
-            toggleComplete(key)
+            toggleComplete(key);
             // markAsComplete(`${item.key}`);
             current_task && renderButtonText(completed);
           }}

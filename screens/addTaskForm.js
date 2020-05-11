@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   TextInput,
   View,
@@ -19,15 +19,19 @@ const AddTaskForm = ({ editMode, closeModal }) => {
 
 //   const tasksContext = useContext(TasksContext);
 
-  const { addNewTask, editTask, currentTask } = tasksContext;
+  const { addNewTask, editTask, current_task } = tasksContext;
+  useEffect(() => {
+    // console.log(current_task)
+    console.log(editMode)
+  }, [current_task, editMode])
 
   const [formInput, setFormInput] = useState({
-    title: `${editMode ? currentTask.title : ""}`,
-    body: `${editMode ? currentTask.body : ""}`,
-    date: `${editMode ? currentTask.date : ""}`,
-    time: `${editMode ? currentTask.time : ""}`,
-    key: `${editMode ? currentTask.key : Math.random().toString()}`,
-    completed: editMode ? currentTask.completed : false
+    title: `${editMode ? current_task.title : ""}`,
+    body: `${editMode ? current_task.body : ""}`,
+    date: `${editMode ? current_task.date : ""}`,
+    time: `${editMode ? current_task.time : ""}`,
+    key: `${editMode ? current_task.key : Math.random().toString()}`,
+    completed: editMode ? current_task.completed : false
   });
   // const [editFormInput, setEditForm] = useState({
   //   title: itemToEdit.title,
@@ -94,7 +98,7 @@ const AddTaskForm = ({ editMode, closeModal }) => {
         key: Math.random().toString(),
         completed: false,
       });
-      console.log(formInput)
+      // console.log(formInput)
       editMode ? editTask(formInput) : addNewTask(formInput);
       return closeModal()
       // addTask(formInput);

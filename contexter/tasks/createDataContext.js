@@ -44,9 +44,6 @@ export default (reducer, initialValue) => {
 
     const getIndividualTask = (key) => {
       try {
-        // console.log(
-        //   "get INDIVIDUAL TASK>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-        // );
         const item = state.all_tasks.find((task) => task.key === key);
         dispatch({
           type: GET_INDIVIDUAL_TASK,
@@ -67,11 +64,12 @@ export default (reducer, initialValue) => {
     };
 
     const editTask = (task) => {
-      // dispatch({
-      //   type: EDIT_EXISTING_TASK,
-      //   payload: task,
-      // });
-      // getAllTasks();
+      console.log(task)
+      dispatch({
+        type: EDIT_EXISTING_TASK,
+        payload: task,
+      });
+      getAllTasks();
     };
 
     const toggleComplete = (key) => {
@@ -111,10 +109,10 @@ export default (reducer, initialValue) => {
     };
 
     const clearTask = () => {
-      // dispatch({
-      //   type: CLEAR_CURRENT_TASK,
-      // });
-      // getAllTasks();
+      dispatch({
+        type: CLEAR_CURRENT_TASK,
+      });
+      getAllTasks();
     };
 
     return (

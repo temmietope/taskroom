@@ -45,22 +45,25 @@ export default function Home({ navigation }) {
   // const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    console.log(loading)
-    console.log("this is the home")
-    console.log(progress)
+    console.log(loading);
+    console.log("this is the home");
+    console.log(progress);
     trackProgress();
     // getAllTasks()
     // console.log(all_tasks)
     // console.log(getAllTasks)
-    getAllTasks()
+    getAllTasks();
   }, [loading, progress, currentTask, completed_tasks, pending_tasks]);
   // useEffect(() => {
   //   trackProgress();
   // }, [completedTasks, tasks, progress]);
 
-  const closeModal = ()=>{
-    setModalOpen(false)
-  }
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  const openModal = () => {
+    setModalOpen(true);
+  };
   // const addTask = (task) => {
   //   // setItemToEdit({})'
 
@@ -144,7 +147,7 @@ export default function Home({ navigation }) {
                 setModalOpen(false);
                 // setItemToEdit({});
                 setEditMode(false);
-                clearTask();
+                !editMode && clearTask();
               }}
             />
             <AddTaskForm
@@ -177,6 +180,10 @@ export default function Home({ navigation }) {
               getIndividualTask(item.key);
               navigation.navigate("TaskDetails", {
                 key: item.key,
+                // openModal: openModal,
+                closeModal: closeModal,
+                // editMode: editMode
+
                 // markAsComplete: markAsComplete,
                 editPost: editPost,
               });
