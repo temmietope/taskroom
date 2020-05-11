@@ -59,11 +59,11 @@ export default (reducer, initialValue) => {
     };
 
     const addNewTask = (task) => {
-      // dispatch({
-      //   type: ADD_NEW_TASK,
-      //   payload: task,
-      // });
-      // getAllTasks();
+      dispatch({
+        type: ADD_NEW_TASK,
+        payload: task,
+      });
+      getAllTasks();
     };
 
     const editTask = (task) => {
