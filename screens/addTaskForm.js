@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextInput,
   View,
@@ -6,17 +6,23 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import { Context as TasksState } from "../contexter/tasks/TasksContext";
 import { globalStyles } from "../styles/global";
 import FlatButton from "../shared/button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 
-const AddTaskForm = ({ addTask }) => {
+const AddTaskForm = ({ editMode, closeModal }) => {
+  const tasksContext = useContext(TasksState);
+
+  const { addNewTask, editTask, current_task } = tasksContext;
   const [formInput, setFormInput] = useState({
-    title: "",
-    body: "",
-    date: "",
-    time: "",
+    title: `${editMode ? current_task.title : ""}`,
+    body: `${editMode ? current_task.body : ""}`,
+    date: `${editMode ? current_task.date : ""}`,
+    // time: `${editMode ? current_task.time : ""}`,
+    key: `${editMode ? current_task.key : Math.random().toString()}`,
+    completed: editMode ? current_task.completed : false,
   });
   const [formError, setFormError] = useState({
     title: "",
@@ -38,8 +44,7 @@ const AddTaskForm = ({ addTask }) => {
     hideDatePicker();
     setFormInput({
       ...formInput,
-      date: moment(date).format("YYYY-MM-DD"),
-      time: moment(date).format("hh:mm a"),
+      date: date,
     });
   };
 
@@ -70,7 +75,8 @@ const AddTaskForm = ({ addTask }) => {
         date: err.date,
       });
     } else {
-      addTask(formInput);
+      editMode ? editTask(formInput) : addNewTask(formInput);
+      return closeModal();
     }
   };
   return (
@@ -79,20 +85,20 @@ const AddTaskForm = ({ addTask }) => {
         <TextInput
           style={globalStyles.input}
           placeholder="Task title"
-          // onChangeText={onChange}
+          value={formInput.title}
           onChangeText={(text) => {
             setFormInput({ ...formInput, title: text });
           }}
         />
         <Text style={styles.err}>{formError.title}</Text>
       </View>
-
       <View style={styles.inputBar}>
         <TextInput
           multiline
           minHeight={100}
           style={globalStyles.input}
           placeholder="Task body"
+          value={formInput.body}
           onChangeText={(text) => {
             setFormInput({ ...formInput, body: text });
           }}

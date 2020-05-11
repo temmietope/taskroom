@@ -1,65 +1,74 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Context as TasksState } from "../contexter/tasks/TasksContext";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import FlatButton from "../shared/button";
+import moment from "moment";
 
-export default class TasksDetails extends Component {
-  state = {
-    buttonText: "",
-    item: {},
+const TasksDetails = (props) => {
+  const tasksContext = useContext(TasksState);
+
+  const {
+    getIndividualTask,
+    current_task,
+    getAllTasks,
+    toggleComplete,
+    pending_tasks,
+    completed_tasks,
+  } = tasksContext;
+
+  const [buttonText, setButtonText] = useState("");
+  useEffect(() => {
+    const taskKey = props.navigation.getParam("key");
+    getIndividualTask(taskKey);
+    getAllTasks();
+    renderButtonText(current_task.completed);
+  }, [current_task.completed, current_task, pending_tasks, completed_tasks]);
+
+  const editPost = props.navigation.getParam("editPost");
+
+  const renderButtonText = (completed) => {
+    completed
+      ? setButtonText("Mark Incomplete")
+      : setButtonText("Task Completed");
   };
 
-  componentDidMount() {
-    const item = this.props.navigation.getParam("item");
-    this.setState({
-      item,
-    });
-
-    this.renderButtonText(item);
-  }
-  renderButtonText = (item) => {
-    if (item) {
-      if (item.completed) {
-        this.setState({
-          buttonText: "Mark Incomplete",
-        });
-      } else {
-        this.setState({
-          buttonText: "Task completed",
-        });
-      }
-    }
-  };
-
-  render() {
-    const { item, buttonText } = this.state;
-    const markAsComplete = this.props.navigation.getParam("markAsComplete");
-
-    return (
-      <View style={globalStyles.container}>
-        <View style={styles.detailsView}>
-          <Text style={styles.taskTitle}>{item.title}</Text>
-          <View style={styles.taskDescription}>
-            <Card>
-              <Text style={styles.taskDescriptionText}>{item.body}</Text>
-              <Text style={styles.taskDescriptionTimeText}>{item.time}</Text>
-            </Card>
-          </View>
-
-          <FlatButton
-            text={buttonText}
-            onPress={() => {
-              markAsComplete(`${item.key}`);
-              this.renderButtonText(item);
-            }}
-          />
+  const { title, body, date, key, completed } = current_task;
+  return (
+    <View style={globalStyles.container}>
+      <View style={styles.detailsView}>
+        <Text style={styles.taskTitle}>{title}</Text>
+        <View style={styles.taskDescription}>
+          <Card>
+            <Text style={styles.taskDescriptionText}>{body}</Text>
+            <Text style={styles.taskDescriptionTimeText}>
+              {moment(date).format("hh:mm a")}
+            </Text>
+          </Card>
         </View>
-      </View>
-    );
-  }
-}
 
+        <TouchableOpacity
+          onPress={async () => {
+            await editPost();
+          }}
+        >
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>Edit task</Text>
+          </View>
+        </TouchableOpacity>
+
+        <FlatButton
+          text={buttonText}
+          onPress={() => {
+            toggleComplete(key);
+            current_task && renderButtonText(completed);
+          }}
+        />
+      </View>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
   detailsView: {
     borderRadius: 6,
@@ -89,6 +98,22 @@ const styles = StyleSheet.create({
   },
   taskDescriptionTimeText: {
     fontSize: 10,
-    textAlign:'right'
+    textAlign: "right",
+  },
+  button: {
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    width: 200,
+    backgroundColor: "#f2f2f2",
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 16,
+    textAlign: "center",
   },
 });
+export default TasksDetails;

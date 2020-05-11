@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,102 +9,46 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { Context as TasksState } from "../contexter/tasks/TasksContext";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddTaskForm from "./addTaskForm";
 import RangeSlider from "../shared/rangeSlider";
 import { colors } from "../styles/color";
+import moment from "moment";
 
 export default function Home({ navigation }) {
+  const tasksContext = useContext(TasksState);
+
   const [modalOpen, setModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([
-    {
-      title: "Cloth Delivery",
-      body: "I have to deliver Bunmi's clothes to her on time",
-      time: "10: 00 am",
-      completed: false,
-      key: "1",
-    },
-    {
-      title: "Groceries Shopping",
-      body: "Go to the market and shop for important things",
-      time: "10: 00 am",
-      completed: false,
-      key: "2",
-    },
-    {
-      title: "Pick kids from school",
-      body: "My kids cant be late",
-      time: "10: 00 am",
-      completed: false,
-      key: "3",
-    },
-    {
-      title: "Fight",
-      body: "Ninja movement, nigga!",
-      time: "10: 00 am",
-      completed: false,
-      key: "4",
-    },
-    {
-      title: "Make dinner",
-      body: "Rice and beans with plantain",
-      time: "10: 00 am",
-      completed: false,
-      key: "5",
-    },
-  ]);
-  const [completedTasks, setCompletedTasks] = useState([]);
-  const [progress, setProgress] = useState(0);
+  const [editMode, setEditMode] = useState(false);
+
+  const {
+    all_tasks,
+    pending_tasks,
+    completed_tasks,
+    progress,
+    trackProgress,
+    current_task,
+    loading,
+    clearTask,
+    getAllTasks,
+    getIndividualTask,
+  } = tasksContext;
 
   useEffect(() => {
     trackProgress();
-  }, [completedTasks, tasks, progress]);
-  const addTask = (task) => {
-    task.key = Math.random().toString();
-    task.completed = false;
-    setTasks((currentTasks) => {
-      return [task, ...currentTasks];
-    });
-    setModalOpen(false);
-  };
-  const trackProgress = () => {
-    const perc = Math.ceil((completedTasks.length / tasks.length) * 100);
-    setProgress(perc);
-  };
-  const markAsComplete = async (key) => {
-    const idx = tasks.findIndex((task) => task.key === key);
-    const item = tasks[idx];
-    if (!item.completed) {
-      item.completed = true;
-      setTasks((currentTasks) => {
-        currentTasks.splice(idx, 1);
-        currentTasks.push(item);
-        return currentTasks;
-      });
-      setCompletedTasks((currentTasks) => {
-        currentTasks.unshift(item);
-        return currentTasks;
-      });
-      trackProgress();
-    } else if (item.completed) {
-      item.completed = false;
-      await setTasks((currentTasks) => {
-        currentTasks.splice(idx, 1);
-        currentTasks.unshift(item);
-        return currentTasks;
-      });
-      const markedIdx = completedTasks.findIndex(
-        (task) => task.key === item.key
-      );
+    getAllTasks();
+  }, [loading, progress, current_task, completed_tasks, pending_tasks]);
 
-      setCompletedTasks((currentTasks) => {
-        currentTasks.splice(markedIdx, 1);
-        return currentTasks;
-      });
-      trackProgress();
-    }
+  const closeModal = () => {
+    setModalOpen(false);
+    setEditMode(false);
+  };
+  const editPost = () => {
+    setModalOpen(true);
+    setEditMode(true);
   };
 
   return (
@@ -116,9 +60,13 @@ export default function Home({ navigation }) {
               name="close"
               size={24}
               style={{ ...styles.modalToggle, ...styles.modalClose }}
-              onPress={() => setModalOpen(false)}
+              onPress={() => {
+                setModalOpen(false);
+                setEditMode(false);
+                !editMode && clearTask();
+              }}
             />
-            <AddTaskForm addTask={addTask} />
+            <AddTaskForm closeModal={closeModal} editMode={editMode} />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -136,19 +84,22 @@ export default function Home({ navigation }) {
       </View>
 
       <FlatList
-        data={tasks}
+        data={all_tasks}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() =>
+            onPress={() => {
+              getIndividualTask(item.key);
               navigation.navigate("TaskDetails", {
-                item: item,
-                markAsComplete: markAsComplete,
-              })
-            }
+                key: item.key,
+                editPost: editPost,
+              });
+            }}
           >
             <Card completed={item.completed}>
               <Text style={globalStyles.titleText}>{item.title}</Text>
-              <Text style={styles.timeText}>{item.time}</Text>
+              <Text style={styles.timeText}>
+                {moment(item.date).format("hh:mm a")}
+              </Text>
             </Card>
           </TouchableOpacity>
         )}
