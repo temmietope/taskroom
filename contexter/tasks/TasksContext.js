@@ -3,7 +3,8 @@ import {
   GET_ALL_TASKS,
   GET_INDIVIDUAL_TASK,
   ADD_NEW_TASK,
-  EDIT_EXISTING_TASK,
+  EDIT_EXISTING_COMPLETED_TASK,
+  EDIT_EXISTING_PENDING_TASK,
   MARK_COMPLETE,
   MARK_INCOMPLETE,
   TRACK_PROGRESS,
@@ -28,16 +29,24 @@ const tasksReducer = (state, action) => {
         loading: false,
       };
     case ADD_NEW_TASK:
-      console.log("add new task")
+      console.log("add new task");
       return {
         ...state,
         pending_tasks: [action.payload, ...state.pending_tasks],
         loading: false,
       };
-    case EDIT_EXISTING_TASK:
+    case EDIT_EXISTING_COMPLETED_TASK:
       return {
         ...state,
-        all_tasks: state.all_tasks.map((task) =>
+        completed_tasks: state.completed_tasks.map((task) =>
+          task.key === action.payload.key ? action.payload : task
+        ),
+        loading: false,
+      };
+    case EDIT_EXISTING_PENDING_TASK:
+      return {
+        ...state,
+        pending_tasks: state.pending_tasks.map((task) =>
           task.key === action.payload.key ? action.payload : task
         ),
         loading: false,
@@ -128,25 +137,7 @@ const initialState = {
   loading: true,
 };
 
-// const actions = {
-//   getAllTasks: async () => {
-//     const newArray = [...initialState.pending_tasks, ...initialState.completed_tasks];
-//     console.log("hello");
-//     dispatch({
-//       type: GET_ALL_TASKS,
-//       payload: newArray,
-//     });
-//   },
-//   getIndividualTask: () => {},
-//   addNewTask: (task) => {},
-//   editTask: (task) => {},
-//   toggleComplete: (key) => {},
-//   trackProgress: () => {},
-//   clearTask: () => {},
-// };
-
 export const { Provider, Context } = createDataContext(
   tasksReducer,
-  // actions,
   initialState
 );

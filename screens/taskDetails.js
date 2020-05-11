@@ -14,36 +14,39 @@ const TasksDetails = (props) => {
   const {
     getIndividualTask,
     current_task,
+    getAllTasks,
     loading,
+    all_tasks,
     toggleComplete,
-    editTask,
+    pending_tasks,
+    completed_tasks,
   } = tasksContext;
 
-  // const [item, setItem] = useState({});
   const [buttonText, setButtonText] = useState("");
   useEffect(() => {
-    // console.log("current task>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    // console.log(current_task)
     const taskKey = props.navigation.getParam("key");
     getIndividualTask(taskKey);
-    // setItem(props.navigation.getParam("item"));
+    getAllTasks();
     renderButtonText(current_task.completed);
-    console.log("i rendered");
-  }, [current_task.completed]);
+    console.log(`${loading} 00000000000000000000000000000000000000`)
+    console.log("task details just rendered????????????????????/????????");
+    console.log(pending_tasks)
+  }, [
+    current_task.completed,
+    current_task.title,
+    current_task,
+    pending_tasks,
+    // all_tasks,
+    completed_tasks,
+  ]);
 
-  // // const markAsComplete = props.navigation.getParam("markAsComplete");
   const editPost = props.navigation.getParam("editPost");
   const closeModal = props.navigation.getParam("closeModal");
 
   const renderButtonText = (completed) => {
-    if (completed) {
-      setButtonText("Mark Incomplete");
-    } else {
-      setButtonText("Task Completed");
-    }
-    // completed
-    //   ? setButtonText("Mark Incomplete")
-    //   : setButtonText("Task Completed");
+    completed
+      ? setButtonText("Mark Incomplete")
+      : setButtonText("Task Completed");
   };
 
   const { title, body, time, key, completed } = current_task;
@@ -51,6 +54,7 @@ const TasksDetails = (props) => {
     <View style={globalStyles.container}>
       <View style={styles.detailsView}>
         <Text style={styles.taskTitle}>{title}</Text>
+        {/* {console.log(al)} */}
         <View style={styles.taskDescription}>
           <Card>
             <Text style={styles.taskDescriptionText}>{body}</Text>
@@ -61,7 +65,6 @@ const TasksDetails = (props) => {
         <TouchableOpacity
           onPress={async () => {
             await editPost();
-            editTask(current_task);
           }}
         >
           <View style={styles.button}>

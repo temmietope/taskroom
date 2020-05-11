@@ -3,7 +3,8 @@ import {
   GET_ALL_TASKS,
   GET_INDIVIDUAL_TASK,
   ADD_NEW_TASK,
-  EDIT_EXISTING_TASK,
+  EDIT_EXISTING_COMPLETED_TASK,
+  EDIT_EXISTING_PENDING_TASK,
   MARK_COMPLETE,
   MARK_INCOMPLETE,
   TRACK_PROGRESS,
@@ -64,11 +65,17 @@ export default (reducer, initialValue) => {
     };
 
     const editTask = (task) => {
-      console.log(task)
-      dispatch({
-        type: EDIT_EXISTING_TASK,
+      // console.log(task)
+      task.completed? 
+        dispatch({
+          type: EDIT_EXISTING_COMPLETED_TASK,
+          payload: task,
+        })
+      : dispatch({
+        type: EDIT_EXISTING_PENDING_TASK,
         payload: task,
       });
+      
       getAllTasks();
     };
 

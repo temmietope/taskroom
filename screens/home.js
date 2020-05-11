@@ -34,7 +34,7 @@ export default function Home({ navigation }) {
     completed_tasks,
     progress,
     trackProgress,
-    currentTask,
+    current_task,
     loading,
     clearTask,
     getAllTasks,
@@ -45,21 +45,16 @@ export default function Home({ navigation }) {
   // const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    console.log(loading);
+    // console.log(loading);
     console.log("this is the home");
-    console.log(progress);
     trackProgress();
-    // getAllTasks()
-    // console.log(all_tasks)
-    // console.log(getAllTasks)
     getAllTasks();
-  }, [loading, progress, currentTask, completed_tasks, pending_tasks]);
-  // useEffect(() => {
-  //   trackProgress();
-  // }, [completedTasks, tasks, progress]);
+    // current_task && getIndividualTask(current_task.key)
+  }, [loading, progress, current_task, completed_tasks, pending_tasks]);
 
   const closeModal = () => {
     setModalOpen(false);
+    setEditMode(false);
   };
   const openModal = () => {
     setModalOpen(true);

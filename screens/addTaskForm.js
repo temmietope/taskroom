@@ -20,10 +20,10 @@ const AddTaskForm = ({ editMode, closeModal }) => {
 //   const tasksContext = useContext(TasksContext);
 
   const { addNewTask, editTask, current_task } = tasksContext;
-  useEffect(() => {
-    // console.log(current_task)
-    console.log(editMode)
-  }, [current_task, editMode])
+  // useEffect(() => {
+  //   // console.log(current_task)
+  //   console.log(editMode)
+  // }, [current_task, editMode])
 
   const [formInput, setFormInput] = useState({
     title: `${editMode ? current_task.title : ""}`,
@@ -93,11 +93,9 @@ const AddTaskForm = ({ editMode, closeModal }) => {
       //i just added this now cos i am working on context
     } else {
       //i just added this now cos i am working on context
-      setFormInput({
-        ...formInput,
-        key: Math.random().toString(),
-        completed: false,
-      });
+      // setFormInput({
+      //   ...formInput
+      // });
       // console.log(formInput)
       editMode ? editTask(formInput) : addNewTask(formInput);
       return closeModal()
