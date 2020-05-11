@@ -1,22 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Context as TasksState } from "../contexter/tasks/TasksContext";
-
-// import {TasksContext} from "../context/tasks/tasksState";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import FlatButton from "../shared/button";
+import moment from "moment";
 
 const TasksDetails = (props) => {
-  // const tasksContext = useContext(TasksContext);
   const tasksContext = useContext(TasksState);
 
   const {
     getIndividualTask,
     current_task,
     getAllTasks,
-    loading,
-    all_tasks,
     toggleComplete,
     pending_tasks,
     completed_tasks,
@@ -28,20 +24,9 @@ const TasksDetails = (props) => {
     getIndividualTask(taskKey);
     getAllTasks();
     renderButtonText(current_task.completed);
-    console.log(`${loading} 00000000000000000000000000000000000000`)
-    console.log("task details just rendered????????????????????/????????");
-    console.log(pending_tasks)
-  }, [
-    current_task.completed,
-    current_task.title,
-    current_task,
-    pending_tasks,
-    // all_tasks,
-    completed_tasks,
-  ]);
+  }, [current_task.completed, current_task, pending_tasks, completed_tasks]);
 
   const editPost = props.navigation.getParam("editPost");
-  const closeModal = props.navigation.getParam("closeModal");
 
   const renderButtonText = (completed) => {
     completed
@@ -49,16 +34,17 @@ const TasksDetails = (props) => {
       : setButtonText("Task Completed");
   };
 
-  const { title, body, time, key, completed } = current_task;
+  const { title, body, date, key, completed } = current_task;
   return (
     <View style={globalStyles.container}>
       <View style={styles.detailsView}>
         <Text style={styles.taskTitle}>{title}</Text>
-        {/* {console.log(al)} */}
         <View style={styles.taskDescription}>
           <Card>
             <Text style={styles.taskDescriptionText}>{body}</Text>
-            <Text style={styles.taskDescriptionTimeText}>{time}</Text>
+            <Text style={styles.taskDescriptionTimeText}>
+              {moment(date).format("hh:mm a")}
+            </Text>
           </Card>
         </View>
 
@@ -76,7 +62,6 @@ const TasksDetails = (props) => {
           text={buttonText}
           onPress={() => {
             toggleComplete(key);
-            // markAsComplete(`${item.key}`);
             current_task && renderButtonText(completed);
           }}
         />
@@ -132,95 +117,3 @@ const styles = StyleSheet.create({
   },
 });
 export default TasksDetails;
-
-// export default class TasksDetails extends Component {
-//   state = {
-//     buttonText: "",
-//     item: {},
-//   };
-
-//   componentDidMount() {
-//     const item = this.props.navigation.getParam("item");
-//     this.setState({
-//       item,
-//     });
-//     this.renderButtonText(item);
-//     console.log("dddddeeeeetttttttaaaaaaaiiiilllllssssssss");
-//     console.log("I made it to task details b*tches");
-//     console.log(item);
-//   }
-
-//   componentWillReceiveProps(nextProps) {
-//     this.setState({ item: nextProps.navigation.getParam("item")});
-//   }
-
-//   // componentWillReceiveProps(props) {
-//   //   this.setState({ item: props.navigation.getParam("item") });
-//   // }
-
-//   // componentDidUpdate(prevProps) {
-//   //   // Typical usage (don't forget to compare props):
-//   //   if (this.props.navigation.getParam("item") !== prevProps.navigation.getParam("item")) {
-//   //     console.log("are you for real")
-//   //     // this.fetchData(this.props.userID);
-//   //     this.setState({item : this.props.navigation.getParam("item")})
-//   //   }
-//   // }
-
-//   // componentDidUpdate(prevProps) {
-//   //   // console.log("i got to task details");
-
-//   //   // console.log(prevProps.navigation.getParam("item"));
-//   //   // if (prevProps.navigation.getParam("item") !== this.state.item) {
-//   //   //   console.log("i got to task details");
-//   //   //   this.setState({ item: prevProps.navigation.getParam("item") });
-//   //   // }
-//   // }
-//   renderButtonText = (item) => {
-//     if (item) {
-//       if (item.completed) {
-//         this.setState({
-//           buttonText: "Mark Incomplete",
-//         });
-//       } else {
-//         this.setState({
-//           buttonText: "Task completed",
-//         });
-//       }
-//     }
-//   };
-
-//   render() {
-//     const { item, buttonText } = this.state;
-//     const markAsComplete = this.props.navigation.getParam("markAsComplete");
-//     const editPost = this.props.navigation.getParam("editPost");
-
-//     return (
-//       <View style={globalStyles.container}>
-//         <View style={styles.detailsView}>
-//           <Text style={styles.taskTitle}>{item.title}</Text>
-//           <View style={styles.taskDescription}>
-//             <Card>
-//               <Text style={styles.taskDescriptionText}>{item.body}</Text>
-//               <Text style={styles.taskDescriptionTimeText}>{item.time}</Text>
-//             </Card>
-//           </View>
-
-//           <TouchableOpacity onPress={() => editPost(item)}>
-//             <View style={styles.button}>
-//               <Text style={styles.buttonText}>Edit task</Text>
-//             </View>
-//           </TouchableOpacity>
-
-//           <FlatButton
-//             text={buttonText}
-//             onPress={() => {
-//               markAsComplete(`${item.key}`);
-//               this.renderButtonText(item);
-//             }}
-//           />
-//         </View>
-//       </View>
-//     );
-//   }
-// }

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Navigator from "./routes/drawer";
-// import {TasksState} from "./context/tasks/tasksState";
 import { Provider as TasksState } from "./contexter/tasks/TasksContext";
 
 const getFonts = () =>
@@ -13,9 +12,6 @@ const getFonts = () =>
 
 export default function App() {
   const [fontsLoaded, setFontLoaded] = useState(false);
-
- 
-
   if (fontsLoaded) {
     return (
       <TasksState>

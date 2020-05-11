@@ -10,23 +10,19 @@ import {
   Keyboard,
 } from "react-native";
 import { Context as TasksState } from "../contexter/tasks/TasksContext";
-
-// import {TasksContext} from "../context/tasks/tasksState";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddTaskForm from "./addTaskForm";
 import RangeSlider from "../shared/rangeSlider";
 import { colors } from "../styles/color";
+import moment from "moment";
 
 export default function Home({ navigation }) {
-  // const tasksContext = useContext(TasksContext);
-
   const tasksContext = useContext(TasksState);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  // const [itemToEdit, setItemToEdit] = useState({});
 
   const {
     all_tasks,
@@ -41,92 +37,18 @@ export default function Home({ navigation }) {
     getIndividualTask,
   } = tasksContext;
 
-  // const [completedTasks, setCompletedTasks] = useState([]);
-  // const [progress, setProgress] = useState(0);
-
   useEffect(() => {
-    // console.log(loading);
-    console.log("this is the home");
     trackProgress();
     getAllTasks();
-    // current_task && getIndividualTask(current_task.key)
   }, [loading, progress, current_task, completed_tasks, pending_tasks]);
 
   const closeModal = () => {
     setModalOpen(false);
     setEditMode(false);
   };
-  const openModal = () => {
-    setModalOpen(true);
-  };
-  // const addTask = (task) => {
-  //   // setItemToEdit({})'
-
-  //   if (task.key) {
-  //     setTasks((currentTasks) => {
-  //       const editIdx = currentTasks.findIndex((t) => t.key === task.key);
-  //       currentTasks[editIdx] = task;
-  //       return currentTasks;
-  //     });
-  //   } else {
-  //     task.key = Math.random().toString();
-  //     task.completed = false;
-  //     setTasks((currentTasks) => {
-  //       return [task, ...currentTasks];
-  //     });
-  //   }
-
-  //   setModalOpen(false);
-  //   setEditMode(false);
-  // };
-  // const trackProgress = () => {
-  //   const perc = Math.ceil((completedTasks.length / tasks.length) * 100);
-  //   setProgress(perc);
-  // };
-  // const markAsComplete = async (key) => {
-  //   const idx = tasks.findIndex((task) => task.key === key);
-  //   const item = tasks[idx];
-  //   if (!item.completed) {
-  //     item.completed = true;
-  //     setTasks((currentTasks) => {
-  //       currentTasks.splice(idx, 1);
-  //       currentTasks.push(item);
-  //       return currentTasks;
-  //     });
-  //     setCompletedTasks((currentTasks) => {
-  //       currentTasks.unshift(item);
-  //       return currentTasks;
-  //     });
-  //     trackProgress();
-  //   } else if (item.completed) {
-  //     item.completed = false;
-  //     await setTasks((currentTasks) => {
-  //       currentTasks.splice(idx, 1);
-  //       currentTasks.unshift(item);
-  //       return currentTasks;
-  //     });
-  //     const markedIdx = completedTasks.findIndex(
-  //       (task) => task.key === item.key
-  //     );
-
-  //     setCompletedTasks((currentTasks) => {
-  //       currentTasks.splice(markedIdx, 1);
-  //       return currentTasks;
-  //     });
-  //     trackProgress();
-  //   }
-  // };
-
-  // const editPost = (item) => {
-  //   setModalOpen(true);
-  //   setEditMode(true);
-  //   setItemToEdit(item);
-  // };
-
   const editPost = () => {
     setModalOpen(true);
     setEditMode(true);
-    // setItemToEdit(item);
   };
 
   return (
@@ -140,17 +62,11 @@ export default function Home({ navigation }) {
               style={{ ...styles.modalToggle, ...styles.modalClose }}
               onPress={() => {
                 setModalOpen(false);
-                // setItemToEdit({});
                 setEditMode(false);
                 !editMode && clearTask();
               }}
             />
-            <AddTaskForm
-              // addTask={addTask}
-              // itemToEdit={itemToEdit}
-              closeModal={closeModal}
-              editMode={editMode}
-            />
+            <AddTaskForm closeModal={closeModal} editMode={editMode} />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -175,18 +91,15 @@ export default function Home({ navigation }) {
               getIndividualTask(item.key);
               navigation.navigate("TaskDetails", {
                 key: item.key,
-                // openModal: openModal,
-                closeModal: closeModal,
-                // editMode: editMode
-
-                // markAsComplete: markAsComplete,
                 editPost: editPost,
               });
             }}
           >
             <Card completed={item.completed}>
               <Text style={globalStyles.titleText}>{item.title}</Text>
-              <Text style={styles.timeText}>{item.time}</Text>
+              <Text style={styles.timeText}>
+                {moment(item.date).format("hh:mm a")}
+              </Text>
             </Card>
           </TouchableOpacity>
         )}

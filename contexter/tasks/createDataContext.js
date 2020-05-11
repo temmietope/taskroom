@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer } from "react";
 import {
   GET_ALL_TASKS,
   GET_INDIVIDUAL_TASK,
@@ -15,21 +15,7 @@ export default (reducer, initialValue) => {
   const Context = React.createContext();
 
   const Provider = (props) => {
-    useEffect(() => {
-      getAllTasks();
-      // getIndividualTask()
-      trackProgress();
-      // console.log(state.all_tasks);
-      console.log("useeffect of createdatacontext");
-    }, [state]);
-
     const [state, dispatch] = useReducer(reducer, initialValue);
-
-    // const boundActions = {};
-
-    // for (let key in actions) {
-    //   boundActions[key] = actions[key](dispatch);
-    // }
 
     const getAllTasks = async () => {
       try {
@@ -61,50 +47,39 @@ export default (reducer, initialValue) => {
         type: ADD_NEW_TASK,
         payload: task,
       });
-      getAllTasks();
     };
 
     const editTask = (task) => {
-      // console.log(task)
-      task.completed? 
-        dispatch({
-          type: EDIT_EXISTING_COMPLETED_TASK,
-          payload: task,
-        })
-      : dispatch({
-        type: EDIT_EXISTING_PENDING_TASK,
-        payload: task,
-      });
-      
-      getAllTasks();
+      task.completed
+        ? dispatch({
+            type: EDIT_EXISTING_COMPLETED_TASK,
+            payload: task,
+          })
+        : dispatch({
+            type: EDIT_EXISTING_PENDING_TASK,
+            payload: task,
+          });
     };
 
     const toggleComplete = (key) => {
-      // console.log(key);
       const idx = state.all_tasks.findIndex((task) => task.key === key);
       const item = state.all_tasks[idx];
       if (item.completed) {
         item.completed = false;
-        // console.log(state.current_task)
         dispatch({
           type: MARK_INCOMPLETE,
           payload: item,
         });
-        trackProgress();
       } else {
         item.completed = true;
-        // console.log(state.current_task)
-
         dispatch({
           type: MARK_COMPLETE,
           payload: item,
         });
-        trackProgress();
       }
     };
 
     const trackProgress = () => {
-      // console.log(state.all_tasks)
       const perc = Math.ceil(
         (state.completed_tasks.length / state.all_tasks.length) * 100
       );
@@ -112,14 +87,12 @@ export default (reducer, initialValue) => {
         type: TRACK_PROGRESS,
         payload: perc,
       });
-      // getAllTasks();
     };
 
     const clearTask = () => {
       dispatch({
         type: CLEAR_CURRENT_TASK,
       });
-      getAllTasks();
     };
 
     return (

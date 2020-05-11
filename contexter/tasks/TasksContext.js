@@ -14,22 +14,18 @@ import {
 const tasksReducer = (state, action) => {
   switch (action.type) {
     case GET_ALL_TASKS:
-      console.log("getAllTasks");
       return {
         ...state,
         all_tasks: action.payload,
         loading: false,
       };
     case GET_INDIVIDUAL_TASK:
-      // console.log("no longer");
-
       return {
         ...state,
         current_task: action.payload,
         loading: false,
       };
     case ADD_NEW_TASK:
-      console.log("add new task");
       return {
         ...state,
         pending_tasks: [action.payload, ...state.pending_tasks],
@@ -41,6 +37,7 @@ const tasksReducer = (state, action) => {
         completed_tasks: state.completed_tasks.map((task) =>
           task.key === action.payload.key ? action.payload : task
         ),
+        current_task: action.payload,
         loading: false,
       };
     case EDIT_EXISTING_PENDING_TASK:
@@ -49,6 +46,7 @@ const tasksReducer = (state, action) => {
         pending_tasks: state.pending_tasks.map((task) =>
           task.key === action.payload.key ? action.payload : task
         ),
+        current_task: action.payload,
         loading: false,
       };
     case MARK_COMPLETE:
@@ -91,32 +89,28 @@ const initialState = {
     {
       title: "Cloth Delivery",
       body: "I have to deliver Bunmi's clothes to her on time",
-      time: "10: 00 am",
-      date: "2020-02-17",
+      date: "2020-03-09T10:12:00.000Z",
       completed: false,
       key: "1",
     },
     {
       title: "Groceries Shopping",
       body: "Go to the market and shop for important things",
-      time: "10: 00 am",
-      date: "2020-03-09",
+      date: "2020-01-20T09:12:00.000Z",
       completed: false,
       key: "2",
     },
     {
       title: "Fight",
       body: "Ninja movement, nigga!",
-      time: "10: 00 am",
-      date: "2020-04-30",
+      date: "2020-10-19T04:10:00.000Z",
       completed: false,
       key: "4",
     },
     {
       title: "Make dinner",
       body: "Rice and beans with plantain",
-      time: "10: 00 am",
-      date: "2020-02-14",
+      date: "2020-09-18T11:19:00.000Z",
       completed: false,
       key: "5",
     },
@@ -125,8 +119,7 @@ const initialState = {
     {
       title: "Pick kids",
       body: "My kids cant be late",
-      time: "10: 00 am",
-      date: "2020-01-24",
+      date: "2020-03-09T10:12:00.000Z",
       completed: true,
       key: "3",
     },

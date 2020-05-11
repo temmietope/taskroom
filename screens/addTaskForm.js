@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextInput,
   View,
@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Context as TasksState } from "../contexter/tasks/TasksContext";
-
-// import {TasksContext} from "../context/tasks/tasksState";
 import { globalStyles } from "../styles/global";
 import FlatButton from "../shared/button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -17,28 +15,15 @@ import moment from "moment";
 const AddTaskForm = ({ editMode, closeModal }) => {
   const tasksContext = useContext(TasksState);
 
-//   const tasksContext = useContext(TasksContext);
-
   const { addNewTask, editTask, current_task } = tasksContext;
-  // useEffect(() => {
-  //   // console.log(current_task)
-  //   console.log(editMode)
-  // }, [current_task, editMode])
-
   const [formInput, setFormInput] = useState({
     title: `${editMode ? current_task.title : ""}`,
     body: `${editMode ? current_task.body : ""}`,
     date: `${editMode ? current_task.date : ""}`,
-    time: `${editMode ? current_task.time : ""}`,
+    // time: `${editMode ? current_task.time : ""}`,
     key: `${editMode ? current_task.key : Math.random().toString()}`,
-    completed: editMode ? current_task.completed : false
+    completed: editMode ? current_task.completed : false,
   });
-  // const [editFormInput, setEditForm] = useState({
-  //   title: itemToEdit.title,
-  //   body: itemToEdit.body,
-  //   date: itemToEdit.date,
-  //   time: itemToEdit.time,
-  // });
   const [formError, setFormError] = useState({
     title: "",
     body: "",
@@ -59,8 +44,7 @@ const AddTaskForm = ({ editMode, closeModal }) => {
     hideDatePicker();
     setFormInput({
       ...formInput,
-      date: moment(date).format("YYYY-MM-DD"),
-      time: moment(date).format("hh:mm a"),
+      date: date,
     });
   };
 
@@ -90,16 +74,9 @@ const AddTaskForm = ({ editMode, closeModal }) => {
         body: err.body,
         date: err.date,
       });
-      //i just added this now cos i am working on context
     } else {
-      //i just added this now cos i am working on context
-      // setFormInput({
-      //   ...formInput
-      // });
-      // console.log(formInput)
       editMode ? editTask(formInput) : addNewTask(formInput);
-      return closeModal()
-      // addTask(formInput);
+      return closeModal();
     }
   };
   return (
@@ -109,7 +86,6 @@ const AddTaskForm = ({ editMode, closeModal }) => {
           style={globalStyles.input}
           placeholder="Task title"
           value={formInput.title}
-          // onChangeText={onChange}
           onChangeText={(text) => {
             setFormInput({ ...formInput, title: text });
           }}
