@@ -20,7 +20,6 @@ const AddTaskForm = ({ editMode, closeModal }) => {
     title: `${editMode ? current_task.title : ""}`,
     body: `${editMode ? current_task.body : ""}`,
     date: `${editMode ? current_task.date : ""}`,
-    // time: `${editMode ? current_task.time : ""}`,
     key: `${editMode ? current_task.key : Math.random().toString()}`,
     completed: editMode ? current_task.completed : false,
   });
