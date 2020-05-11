@@ -58,6 +58,9 @@ export default function Home({ navigation }) {
   //   trackProgress();
   // }, [completedTasks, tasks, progress]);
 
+  const closeModal = ()=>{
+    setModalOpen(false)
+  }
   // const addTask = (task) => {
   //   // setItemToEdit({})'
 
@@ -147,6 +150,7 @@ export default function Home({ navigation }) {
             <AddTaskForm
               // addTask={addTask}
               // itemToEdit={itemToEdit}
+              closeModal={closeModal}
               editMode={editMode}
             />
           </View>

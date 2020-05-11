@@ -14,7 +14,7 @@ import FlatButton from "../shared/button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 
-const AddTaskForm = ({ editMode }) => {
+const AddTaskForm = ({ editMode, closeModal }) => {
   const tasksContext = useContext(TasksState);
 
 //   const tasksContext = useContext(TasksContext);
@@ -96,6 +96,7 @@ const AddTaskForm = ({ editMode }) => {
       });
       console.log(formInput)
       editMode ? editTask(formInput) : addNewTask(formInput);
+      return closeModal()
       // addTask(formInput);
     }
   };
